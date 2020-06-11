@@ -28,7 +28,13 @@ code {
 .favorite {
   color: red;
 }
-.card{
-  max-width: 10rem;
+.pcard{
+  max-width: 15rem;
+  min-width: 15rem;
+}
+.main{
+  min-height: 39.3rem;
+}
+.tcard{
   min-width: 10rem;
 }
