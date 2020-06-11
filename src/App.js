@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Admin from "./componates/adminPanel/Admin";
-import NavBarcomp from "./componates/NavBarcomp";
-import Footercomp from "./componates/Footercomp";
-import ProductCardComp from "./componates/ProductCardComp";
+import Admin from "./components/adminPanel/Admin";
+import Home from './components/Home';
+import Cart from './components/Cart';
+import Products from './components/Products';
 
 export const UserContext = React.createContext(null);
 
@@ -17,26 +17,17 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/admin" component={Admin} />
+          <Route exact path="/" component={Home} />
+          <Route path="/cart" component={Cart} />
+          {/* <Route path="/admin" component={Admin} /> */}
+          {/* <Route path="/category/:id" component={CategoryProduct} /> */}
+          {/* <Route path="/categories" component={Categories} /> */}
+          <Route path="/products" component={Products} />
+          {/* <Route path="/product/:id" component={Product} /> */}
+          {/* <Route path="/brands" component={Brands} /> */}
+          {/* <Route path="/brand/:id" component={Brand} /> */}
         </Switch>
       </BrowserRouter>
-
-      {/* <div className="container flex m-0 col-12 p-0"> 
-       <NavBarcomp /> 
-       <Footercomp />
-       <div className="row col-12 justify-content-center">
-      <ProductCardComp productid="aaaa" productName="aaaaaaaaaaaaaaaaaaaaaaaaaaaa" productDetails="vvvvvvvvvvvvvvvvvvvvvvvvvv" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" productPrice="100000"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-      <ProductCardComp productid="aaaa" productName="aaaa" productDetails="aaaa" productImage="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"/>
-
-      </div>
-    </div> */}
     </UserContext.Provider>
   );
 }
