@@ -19,7 +19,7 @@ const Footer = props => {
     <div
       {...rest}
       className={clsx(classes.root, className)}
-      style={{ position:'fixed', bottom:0 }}
+      style={{ marginTop: 'auto' }}
     >
       <Typography variant="body1">
         &copy;{' '}

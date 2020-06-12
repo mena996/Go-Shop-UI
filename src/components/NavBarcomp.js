@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import SignUpcomp from "./SignUpcomp";
 import { Link } from "react-router-dom";
+import Login from "./Login";
+import { UserContext } from "../App";
 
 const NavBarcomp = ({ userid }) => {
   // const [loved, setloved] = useState([]);
@@ -87,6 +89,15 @@ const NavBarcomp = ({ userid }) => {
         </div>
       </nav>
       <SignUpcomp />
+      <div className="modal fade" id="login" tabIndex="-1" role="dialog" aria-labelledby="login" aria-hidden="true" >
+        <div className="modal-dialog modal-dialog-centered p-3">
+          <div className="modal-content">
+            <div className="container">     
+              <Login isAdmin={false} UserContext={UserContext} />
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   )
   // }
