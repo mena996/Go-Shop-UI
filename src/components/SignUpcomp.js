@@ -8,12 +8,14 @@ const SignUpcomp = ({ productid, userid }) => {
   const [newUserLastName, setnewUserLastName] = useState([]);
   const [newUserUsername, setnewUserUsername] = useState([]);
   const [newUserEmail, setnewUserEmail] = useState([]);
+  const [newUserPhone, setnewUserPhone] = useState([]);
+  const [newUserAddress, setnewUserAddress] = useState([]);
   const [newUserPassword, setnewUserPassword] = useState([]);
   const [newUserPasswordCheck, setnewUserPasswordCheck] = useState([]);
-  const [newUserImage, setnewUserImage] = useState([]);
-  const handleChange = (e) => {
-    setnewUserImage(e.target.files[0]);
-  }
+  // const [newUserImage, setnewUserImage] = useState([]);
+  // const handleChange = (e) => {
+  //   setnewUserImage(e.target.files[0]);
+  // }
   const handleSubmit = (e) => {
     e.preventDefault();
     let newUser = {
@@ -22,16 +24,25 @@ const SignUpcomp = ({ productid, userid }) => {
       "username": newUserUsername,
       "email": newUserEmail,
       "password": newUserPassword,
-      "image": newUserImage,
+      "phone": newUserPhone,
+      "address": newUserAddress,
+      // "image": newUserImage,
       "isadmin": false
     };
-    // console.log(newUser);
-    if (newUserPassword.length < 4) {
+    // console.log(newUser)(;
+    if (!(/^(012[2|7]|010[0|6]|011[1|4]|0155).{7}$/.test(newUserPhone))) {
+      setErors("please enter valid phone")
+    }
+    else if (newUserAddress.length < 5) {
+      setErors("address is too short")
+    }
+    else if (newUserPassword.length < 4) {
       setErors("password is too short")
     }
     else if (newUserPassword !== newUserPasswordCheck) {
       setErors("password doesnot match");
     } else {
+      console.log(newUser);
       Axios.post('http://localhost:5000/users', newUser).then((messages) => {
         setdone(messages);
         setErors("");
@@ -41,8 +52,14 @@ const SignUpcomp = ({ productid, userid }) => {
         setnewUserEmail("");
         setnewUserPassword("");
         setnewUserPasswordCheck("");
-        setnewUserImage("");
-      }).catch((err) => setErors(err.response.data));
+        setnewUserPhone("");
+        setnewUserAddress("");
+        // setnewUserImage("");
+      }).catch((err) => {
+        setErors(err.response.data);
+        setdone("");
+        console.log(err);
+      });
     }
   }
   return (
@@ -83,11 +100,20 @@ const SignUpcomp = ({ productid, userid }) => {
                 <label >Retype Password</label>
                 <input type="password" className="form-control" id="passwordCheck" value={newUserPasswordCheck} onChange={e => { const { target: { value } } = e; setnewUserPasswordCheck(value) }} aria-describedby="emailHelp" placeholder="Retype Password" required />
               </div>
-              <div className="custom-file mb-3">
+              <div className="form-group">
+                <label >phone</label>
+                <input type="text" className="form-control" id="username" value={newUserPhone} onChange={e => { const { target: { value } } = e; setnewUserPhone(value) }} aria-describedby="emailHelp" placeholder="phone" required />
+              </div>
+              <div className="form-group">
+                <label >address</label>
+                <input type="text" className="form-control" id="address" value={newUserAddress} onChange={e => { const { target: { value } } = e; setnewUserAddress(value) }} aria-describedby="emailHelp" placeholder="address" required />
+              </div>
+
+              {/* <div className="custom-file mb-3">
                 <input type="file" className="custom-file-input" id="validatedCustomFile" value={newUserImage} onChange={(e) => handleChange(e)} required />
                 <label className="custom-file-label" >upload your image</label>
                 <div className="invalid-feedback">Example invalid custom file feedback</div>
-              </div>
+              </div> */}
               <div className="form-group mb-3 text-center">
                 <button className="btn btn-primary col-2" type="submit">Signup</button>
               </div>
