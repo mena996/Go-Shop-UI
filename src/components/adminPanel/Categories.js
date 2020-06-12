@@ -52,7 +52,7 @@ const Categories = () => {
                 { name: newData.name },
                 data,
                 setData
-                ).then(res => (res) ? resolve() : reject())
+                ).then(res => (res) ? resolve() : reject(alert("error: Name is required")))
             }, 100);
           }),
         onRowDelete: (oldData) =>
@@ -65,7 +65,7 @@ const Categories = () => {
                 data,
                 setData,
                 true
-                ).then(res => (res) ? resolve() : reject())
+                ).then(res => (res) ? resolve() : reject(alert("error: Name is required")))
             }, 100);
           }),
       }}
