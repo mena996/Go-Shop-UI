@@ -75,7 +75,7 @@ const NavBarcomp = ({ userid }) => {
             <li className="nav-item avatar dropdown">
               <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false" href="#!">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" width="35px" className="rounded-circle z-depth-0"
+                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar.jpg" width="35px" className="rounded-circle z-depth-0"
                   alt="avatar" />
               </a>
               <div className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
