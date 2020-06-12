@@ -5,6 +5,7 @@ import Admin from "./components/adminPanel/Admin";
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Products from './components/Products';
+import Product from "./components/product";
 
 export const UserContext = React.createContext(null);
 
@@ -23,7 +24,7 @@ function App() {
           {/* <Route path="/category/:id" component={CategoryProduct} /> */}
           {/* <Route path="/categories" component={Categories} /> */}
           <Route path="/products" component={Products} />
-          {/* <Route path="/product/:id" component={Product} /> */}
+          <Route path="/product/:id" component={Product} />
           {/* <Route path="/brands" component={Brands} /> */}
           {/* <Route path="/brand/:id" component={Brand} /> */}
         </Switch>
