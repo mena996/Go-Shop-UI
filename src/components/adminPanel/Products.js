@@ -165,7 +165,7 @@ const Products = () => {
                 },
                 data,
                 setData
-              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required"))));
+              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required and price must be a number"))));
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
@@ -184,7 +184,7 @@ const Products = () => {
                 },
                 data,
                 setData
-              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required"))));
+              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required and price must be a number"))));
             }, 100);
           }),
         onRowDelete: (oldData) =>
