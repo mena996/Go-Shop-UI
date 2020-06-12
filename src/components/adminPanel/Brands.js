@@ -53,6 +53,7 @@ const Brands = () => {
                 <Button
                   variant="contained"
                   color="primary"
+                  component="span"
                   startIcon={<CloudUploadIcon />}
                 >
                   Upload
@@ -98,7 +99,7 @@ const Brands = () => {
                 { image, name: newData.name, description: newData.description },
                 data,
                 setData
-              ).then((res) => (res ? resolve() : reject()));
+              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required"))));
             }, 100);
           }),
         onRowDelete: (oldData) =>
@@ -111,7 +112,7 @@ const Brands = () => {
                 data,
                 setData,
                 true
-              ).then((res) => (res ? resolve() : reject()));
+              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required"))));
             }, 100);
           }),
       }}

@@ -64,7 +64,7 @@ const Login = ({UserContext, isAdmin}) => {
   }
   };
 //admin panel
-  if (isAdmin) return (
+   return (
     <Container component="main" maxWidth="xs">
     <CssBaseline />
     <div className={classes.paper}>
@@ -72,7 +72,7 @@ const Login = ({UserContext, isAdmin}) => {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5" className='my-2'>
-        Sign in to Admin panel
+        {isAdmin ? "Sign in to Admin panel" : "Welcome to Go-Shop"}
       </Typography>
       {error && (
             <div className="alert alert-danger mt-3" role="alert">
@@ -123,26 +123,6 @@ const Login = ({UserContext, isAdmin}) => {
     <Box mt={8}>
     </Box>
   </Container>
-  )
-  // users login form
-  else return (
-    <form className="form-inline" onSubmit={handleSubmit}>
-        <div className="form-group col-6">
-            <label >Welcome To Good Reads</label>
-        </div>
-        <div className="form-group col-2">
-            <input type="text" placeholder="Username" className="form-control  col-12" 
-            id="email" name='username' required onChange={handleInputChange}/>
-        </div>
-        <div className="form-group col-2">
-            <input type="password" placeholder="Password" className="form-control col-12" 
-            id="pwd" name='password' required onChange={handleInputChange}/>
-        </div>
-        <div className="checkbox col-1">
-            <label><input type="checkbox" /> Remember me </label>
-        </div>
-        <button className="btn btn-primary col-1" type="submit">login</button>
-    </form>
   )
 };
 
