@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Popup from "reactjs-popup";
 import ReviewForm from './Reviewform'; 
+import { Link } from 'react-router-dom';
 
 
 const Reviews = (props)=> {
@@ -41,7 +42,7 @@ const Reviews = (props)=> {
                                     closeOnDocumentClick>
                                     {close => (
                                     <> 
-                                    <a className="close btn btn-link" onClick={close}>cancel</a>
+                                    <Link className="close btn btn-link" onClick={close}>cancel</Link>
                                     <div className="container p-2">
                                     <h4>Edit your review </h4>
                                     <hr/>

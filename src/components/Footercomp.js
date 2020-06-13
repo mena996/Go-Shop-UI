@@ -1,5 +1,6 @@
 import React from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import { Link } from "react-router-dom";
 
 const FooterPage = () => {
   return (
@@ -14,23 +15,23 @@ const FooterPage = () => {
           </MDBCol>
           <MDBCol md="3">
             <h5 className="title d-flex justify-content-center">Top Brands</h5>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
           </MDBCol>
           <MDBCol md="3">
           <h5 className="title d-flex justify-content-center">Top categories</h5>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
-            <a className="text-light d-flex justify-content-center" href="#!">Links</a>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
           </MDBCol>
         </MDBRow>
       </MDBContainer>
       <div className="footer-copyright text-center py-3">
         <MDBContainer fluid>
-          &copy; {new Date().getFullYear()} Copyright: <a href="#!" className="text-light"> GO-SHOP </a>
+          &copy; {new Date().getFullYear()} Copyright: <Link to="#!" className="text-light"> GO-SHOP </Link>
         </MDBContainer>
       </div>
     </MDBFooter>

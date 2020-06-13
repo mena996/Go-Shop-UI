@@ -25,11 +25,76 @@ const Products = () => {
     return (
         <div className="container flex m-0 col-12 p-0">
             <NavBarcomp />
-            <div className="main">
-                <div className="container col-12 row justify-content-center">
-                    {productsData.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
+            <div className="row col-12 m-0 p-0">
+                <div className="card col-sm-7 col-xl-2 col-md-4 m-3 ">
+                    <article className="card-group-item">
+                        <header className="card-header">
+                            <h6 className="title">Brands </h6>
+                        </header>
+                        <div className="filter-content">
+                            <div className="card-body">
+                                <form>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Mersedes Benz
+				                        </span>
+                                    </label>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Nissan Altima
+                                        </span>
+                                    </label>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Another Brand
+                                        </span>
+                                    </label>
+                                </form>
+
+                            </div>
+                        </div>
+                    </article>
+                    <article className="card-group-item">
+                        <header className="card-header">
+                            <h6 className="title">categories </h6>
+                        </header>
+                        <div className="filter-content">
+                            <div className="card-body">
+                                <form>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Mersedes Benz
+				                        </span>
+                                    </label>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Nissan Altima
+                                        </span>
+                                    </label>
+                                    <label className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" />
+                                        <span className="form-check-label">
+                                            Another Brand
+                                        </span>
+                                    </label>
+                                </form>
+
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
+                    <div className="container col-12 row justify-content-center">
+                        {productsData.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
+                    </div>
                 </div>
             </div>
+
             <Footercomp />
         </div>
     );
