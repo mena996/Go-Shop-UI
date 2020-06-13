@@ -117,6 +117,9 @@ const Brands = () => {
           }),
       }}
       data={brands}
+      options={{
+        paging: false
+      }}
     />
   );
 };

@@ -37,10 +37,10 @@ export default function Orders() {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell>Date</TableCell>
-              <TableCell align="right">Customer</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell><strong>Date</strong></TableCell>
+              <TableCell align="left"><strong>Customer</strong></TableCell>
+              <TableCell align="left"><strong>Status</strong></TableCell>
+              <TableCell align="left"><strong>Actions</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,6 +83,18 @@ function Row(props) {
     globalHandleSubmit(order, "orders", { status }, data, setData);
   };
 
+  function ccyFormat(num) {
+    return `${num.toFixed(2)}`;
+  }
+
+  function subtotal(row) {
+    return row.products.map(({ price, quantity }) => price * quantity).reduce((sum, i) => sum + i, 0);
+  }
+
+  const invoiceSubtotal = subtotal(row);
+const invoiceTaxes = 0.14 * invoiceSubtotal;
+const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -98,9 +110,9 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.date.substring(0, 10)}
         </TableCell>
-        <TableCell align="right">{row.customer.username}</TableCell>
-        <TableCell align="right">{generateStatus(row.status)}</TableCell>
-        <TableCell align="right">{generateDeliveryButton(row)}</TableCell>
+        <TableCell align="left">{row.customer.username}</TableCell>
+        <TableCell align="left">{generateStatus(row.status)}</TableCell>
+        <TableCell align="left">{generateDeliveryButton(row)}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -112,10 +124,10 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Product</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell><strong>Product</strong></TableCell>
+                    <TableCell><strong>Price</strong></TableCell>
+                    <TableCell align="left"><strong>Amount</strong></TableCell>
+                    <TableCell align="left"><strong>Total price ($)</strong></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -125,13 +137,56 @@ function Row(props) {
                         {product.product.name}
                       </TableCell>
                       <TableCell>{product.price}</TableCell>
-                      <TableCell align="right">{product.quantity}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="left">{product.quantity}</TableCell>
+                      <TableCell align="left">
                         {Math.round(product.quantity * product.price * 100) /
                           100}
                       </TableCell>
                     </TableRow>
                   ))}
+                  <TableRow>
+            <TableCell rowSpan={3} />
+            <TableCell colSpan={2}><strong>Subtotal</strong></TableCell>
+            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell><strong>Tax</strong></TableCell>
+            <TableCell align="right">{`${(0.14 * 100).toFixed(0)} %`}</TableCell>
+            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={2}><strong>Total</strong></TableCell>
+            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+          </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+            <Box margin={1}>
+              <Typography variant="h6" gutterBottom component="div">
+                Customer Details
+              </Typography>
+              <Table size="small" aria-label="customer">
+                <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        <strong>Full Name:</strong>
+                      </TableCell>
+                      <TableCell>{row.customer.firstName} {row.customer.lastName}</TableCell>
+                      <TableCell component="th" scope="row">
+                      <strong>Email:</strong>
+                      </TableCell>
+                      <TableCell>{row.customer.email}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                      <strong>Address:</strong>
+                      </TableCell>
+                      <TableCell>{row.customer.address}</TableCell>
+                      <TableCell component="th" scope="row">
+                      <strong>Phone:</strong>
+                      </TableCell>
+                      <TableCell>{row.customer.phone}</TableCell>
+                    </TableRow>
                 </TableBody>
               </Table>
             </Box>

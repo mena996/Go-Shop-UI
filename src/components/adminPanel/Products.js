@@ -202,6 +202,9 @@ const Products = () => {
           }),
       }}
       data={products}
+      options={{
+        paging: false
+      }}
     />
   );
 };
