@@ -1,5 +1,6 @@
 import React from "react";
 import Favoritecomp from "./Favoritecomp";
+import { Link } from "react-router-dom";
 
 const ProductCardComp = ({ product, userid }) => {
 //  console.log(product);
@@ -12,14 +13,14 @@ const ProductCardComp = ({ product, userid }) => {
         </div>
       </div>
       <div className="card-body">
-        <a href={'product/'+product._id}>
+        <Link to={'product/'+product._id}>
           <h4 className="card-title text-truncate">{product.name}</h4>
-        </a>
+        </Link>
   <h6 className="card-subtitle mb-2 text-muted">category: {product.category.name}</h6>
         <p className="card-text  text-truncate">{product.description}</p>
         <div className="justify-content-between align-items-center">
           <div className="price text-success"><h5 className="mt-0">{product.price} L.E</h5></div>
-          <a href="#!" className="btn btn-danger float-right mt-0"><i className="fa fa-shopping-cart"></i> Add to Cart</a>
+          <Link to="#!" className="btn btn-danger float-right mt-0"><i className="fa fa-shopping-cart"></i> Add to Cart</Link>
         </div>
       </div>
     </div>

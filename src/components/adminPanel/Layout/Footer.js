@@ -25,7 +25,7 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://github.com/mena996/Go-Shop-UI"
+          to="https://github.com/mena996/Go-Shop-UI"
           target="_blank"
         >
           Go-Shop

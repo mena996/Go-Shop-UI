@@ -6,13 +6,12 @@ import { UserContext } from "../App";
 import Popup from "reactjs-popup";
 import Ratecomp from './Ratecomp';
 import ProductRate from './RateResults';
-import Footer from './adminPanel/Layout/Footer';
 import FooterPage from './Footercomp';
 import NavBarcomp from './NavBarcomp';
 
 
 const Product = ({ match: { params: { id } } }) => {
-    const [product, setBook] = useState({ product: {}, error: null, isloaded: false })
+    const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
     const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
     const { user, setUser } = React.useContext(UserContext);
     const user_id = user ? user.user._id : null
@@ -24,10 +23,10 @@ const Product = ({ match: { params: { id } } }) => {
             .then(res => res.json())
             .then(
                 (result) => {
-                    setBook({ product: result, error: null, isloaded: true })
+                    setProduct({ product: result, error: null, isloaded: true })
                 },
                 (error) => {
-                    setBook({ product: {}, error: error, isloaded: true })
+                    setProduct({ product: {}, error: error, isloaded: true })
                 }
             )
 
@@ -43,7 +42,7 @@ const Product = ({ match: { params: { id } } }) => {
             )
     }, [])
 
-    const submitHandler = (text, mode, book_id) => {
+    const submitHandler = (text, mode, product_id) => {
         if (!user_id) {
             setOpen(true)
         } else {
@@ -71,7 +70,7 @@ const Product = ({ match: { params: { id } } }) => {
                             })
                     break
                 case "edit":
-                    fetch(`http://localhost:5000/reviews/${book_id}`,
+                    fetch(`http://localhost:5000/reviews/${product_id}`,
                         {
                             method: "PATCH",
                             headers: {
@@ -139,7 +138,7 @@ const Product = ({ match: { params: { id } } }) => {
                             closeOnDocumentClick
                             onClose={() => setOpen(false)}>
                             <>
-                                <a className="close" onClick={() => setOpen(false)}>&times;</a>
+                                <Link className="close" onClick={() => setOpen(false)}>&times;</Link>
                                 <div className="container p-2">
                                     <h5 className="text-center">WARNNING </h5>
                                     <hr />

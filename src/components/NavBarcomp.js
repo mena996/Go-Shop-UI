@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import Login from "./Login";
 import { UserContext } from "../App";
 
-const NavBarcomp = ({ userid }) => {
+const NavBarcomp = () => {
+  const { user, setUser } = React.useContext(UserContext);
+  const user_id = user ? user.user._id : null;
   // const [loved, setloved] = useState([]);
   // useEffect(() => {
   //   if (productid && userid) {
@@ -36,7 +38,7 @@ const NavBarcomp = ({ userid }) => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark col-12 sticky-top">
-        <a className="navbar-brand text-light" href="#">GO-SHOP</a>
+        <Link className="navbar-brand text-light" to="/">GO-SHOP</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -44,45 +46,50 @@ const NavBarcomp = ({ userid }) => {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item active">
-              <a className="nav-link text-light" href="/">Home <span className="sr-only">(current)</span></a>
+              <Link className="nav-link text-light" to="/">Home <span className="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-light" href="/products">Products</a>
+              <Link className="nav-link text-light" to="/products">Products</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-light" href="/brands">Brands</a>
+              <Link className="nav-link text-light" to="/brands">Brands</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-light" href="/categories">Categories</a>
+              <Link className="nav-link text-light" to="/categories">Categories</Link>
             </li>
           </ul>
           <ul className="navbar-nav ml-auto nav-flex-icons">
             <form className="form-inline my-2 my-lg-0">
               <input className="form-control mr-sm-2" type="search" placeholder="Search" />
-              <button className="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+              <button className="btn btn-outline-light my-2 my-sm-0 mr-1" type="submit">Search</button>
             </form>
-            <li className="nav-item">
-              <h3>
-                <a href="/cart" className="nav-link text-light text-truncate">
-                  <i className="fa fa-shopping-cart"></i>
-                5
-              </a>
-              </h3>
-            </li>
-            <li>
-              <button type="button" className="btn btn-outline-light my-2" data-toggle="modal" data-target="#signUp">Sign Up</button>
-            </li>
+            {(user_id != null) ?
+              <li className="nav-item">
+                <h3>
+                  <Link to="/cart" className="nav-link text-light text-truncate">
+                    <i className="fa fa-shopping-cart"></i>
+                {user.user.cart.length}
+              </Link>
+                </h3>
+              </li> : <></>
+            }
+            {(user_id == null) ?
+              <li>
+                <button type="button" className="btn btn-outline-light my-2" data-toggle="modal" data-target="#signUp">Sign Up</button>
+              </li> : <></>
+            }
+
             <li className="nav-item avatar dropdown">
-              <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" href="#!">
+              <Link className="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" to="#!">
                 <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar.jpg" width="35px" className="rounded-circle z-depth-0"
                   alt="avatar" />
-              </a>
+              </Link>
               <div className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                 aria-labelledby="navbarDropdownMenuLink-55">
-                <button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button>
-                <a className="dropdown-item" href="#!">wishlist</a>
-                <a className="dropdown-item" href="#!">logout</a>
+                {(user_id == null)?<button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button>:<></>}
+                {(user_id != null)?<Link className="dropdown-item" to="#!">wishlist</Link>:<></>}
+                {(user_id != null)?<Link className="dropdown-item" to="#!">logout</Link>:<></>}
               </div>
             </li>
           </ul>
@@ -92,7 +99,7 @@ const NavBarcomp = ({ userid }) => {
       <div className="modal fade" id="login" tabIndex="-1" role="dialog" aria-labelledby="login" aria-hidden="true" >
         <div className="modal-dialog modal-dialog-centered p-3">
           <div className="modal-content">
-            <div className="container">     
+            <div className="container">
               <Login isAdmin={false} UserContext={UserContext} />
             </div>
           </div>
