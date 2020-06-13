@@ -10,7 +10,7 @@ const Admin = () => {
   const { user } = React.useContext(UserContext);
   const [data, setData] = React.useState({
     user,
-    currentPage: "",
+    currentPage: "statistics",
     loading: false,
     toggleUpdate: false,
   });

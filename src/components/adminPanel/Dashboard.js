@@ -10,12 +10,16 @@ import Products from "./Products";
 import Brands from "./Brands";
 import Categories from "./Categories";
 import Orders from "./Orders";
+import Users from "./Users";
+import Statistics from "./Statistics";
 
 const Dashboard = (props) => {
     const { data } = React.useContext(DataContext);
 
   const renderCurrentPage = () => {
       switch (data.currentPage) {
+          case 'statistics':
+              return <Statistics />
           case 'products':
               return <Products />
             case 'categories':
@@ -24,6 +28,8 @@ const Dashboard = (props) => {
                 return <Brands />
             case 'orders':
                 return <Orders />
+            case 'users':
+                return <Users />
           default:
               break;
       }
