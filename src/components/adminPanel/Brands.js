@@ -11,7 +11,7 @@ const Brands = () => {
   // user, loading data
   const { data, setData } = React.useContext(DataContext);
   // chosen image
-  const [image, setImage] = React.useState();
+  const image = React.useRef();
 
   React.useEffect(() => {
     //setting loading to true
@@ -23,9 +23,6 @@ const Brands = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.loading, data.toggleUpdate]);
 
-  const handleChange = (e) => {
-    setImage(e.target.files[0]);
-  };
   return (
     <MaterialTable
       icons={Icons}
@@ -47,7 +44,7 @@ const Brands = () => {
                 id="raised-button-file"
                 type="file"
                 required
-                onChange={(e) => handleChange(e)}
+                ref = {image}
               />
               <label htmlFor="raised-button-file">
                 <Button
@@ -79,7 +76,7 @@ const Brands = () => {
               globalHandleSubmit(
                 null,
                 "brands",
-                { image, name: newData.name, description: newData.description },
+                { image: image.current?.files[0], name: newData.name, description: newData.description },
                 data,
                 setData
               ).then((res) => {
@@ -96,7 +93,7 @@ const Brands = () => {
               globalHandleSubmit(
                 oldData,
                 "brands",
-                { image, name: newData.name, description: newData.description },
+                { image: image.current?.files[0], name: newData.name, description: newData.description },
                 data,
                 setData
               ).then((res) => (res ? resolve() : reject(alert("error: All fields are required"))));
