@@ -55,7 +55,6 @@ export const globalHandleSubmit = async (
   let headers = new Headers({
     Authorization: "Bearer " + data?.user?.token,
   });
-  console.log(data)
   // data to be sent if the current view is products or brands, so we use FormData to send images
   let body = (payload && objectToFormData(payload)) || null;
   // if there is an old item
@@ -69,7 +68,7 @@ export const globalHandleSubmit = async (
     method = "POST";
   }
   // if current view is categories use application/json as a content type and use JSON.stringify with the body
-  if (currentView === "categories" || currentView === "orders") {
+  if (["categories", "orders", "users"].includes(currentView)) {
     headers.append("Content-Type", "application/json");
     body = (payload && JSON.stringify(payload)) || null;
   }
@@ -87,7 +86,11 @@ export const globalHandleSubmit = async (
 };
 
 // function to fetch the arrays
-export const fetchData = async (currentView) => {
-  const res = await fetch(`http://localhost:5000/${currentView}`);
+export const fetchData = async (currentView,user= null) => {
+  const res = await fetch(`http://localhost:5000/${currentView}`, user && {
+    headers: {
+      Authorization: "Bearer " + user?.token,
+    }
+  });
   return await res.json();
 };

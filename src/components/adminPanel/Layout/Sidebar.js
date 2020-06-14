@@ -19,6 +19,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import ShopIcon from "@material-ui/icons/Shop";
 import InputIcon from "@material-ui/icons/Input";
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import { UserContext } from "../../../App";
 
 const Sidebar = (props) => {
@@ -35,7 +36,7 @@ const Sidebar = (props) => {
   const pages = [
     {
       title: "Dashboard",
-      component: "dashboard",
+      component: "statistics",
       icon: <DashboardIcon />,
     },
     {
@@ -80,11 +81,7 @@ const Sidebar = (props) => {
     >
       <div {...rest} className={clsx(classes.root, className)}>
         <div className="text-center">
-          <img
-            src={data?.user?.user?.image}
-            alt={data?.user?.user?.username}
-            style={{ height: 100, width: 100, borderRadius: "50%", margin: 20 }}
-          />
+        <AccountCircleTwoToneIcon style={{ width:'100px', height:'100px', display: "inline-block", marginBottom:"0px", marginRight:'5px'}}/>
           <h4>{data?.user?.user?.firstName} {data?.user?.user?.lastName}</h4>
         </div>
         <Divider className={classes.divider} />

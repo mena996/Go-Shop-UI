@@ -70,6 +70,9 @@ const Categories = () => {
           }),
       }}
       data={categories}
+      options={{
+        paging: false
+      }}
     />
   );
 };
