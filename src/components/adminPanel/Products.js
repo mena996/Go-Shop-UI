@@ -45,7 +45,6 @@ const Products = () => {
     getBookOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.loading, data.toggleUpdate]);
-
   const handleInputChange = (e) => {
     const {
       target: { name, value },
@@ -169,7 +168,6 @@ const Products = () => {
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            console.log(product)
             setTimeout(() => {
               globalHandleSubmit(
                 oldData,

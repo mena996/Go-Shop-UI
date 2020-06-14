@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const FooterPage = () => {
+  // const [topproducts, settopproducts] = useState([]);
+  const [topcats, settopcats] = useState([]);
+  const [topbrands, settopbrands] = useState([]);
+  useEffect(() => {
+    // axios.get('http://localhost:5000/products/topproducts')
+    //   .then((res) => {
+    //     settopproducts(res.data);
+    //   })
+    axios.get('http://localhost:5000/products/topcats')
+      .then((res) => {
+        settopcats(res.data);
+      })
+    axios.get('http://localhost:5000/products/topbrands')
+      .then((res) => {
+        settopbrands(res.data);
+      })
+  }, []);
   return (
     <MDBFooter className="footer bg-dark text-light font-small pt-4 mb-0">
       <MDBContainer fluid className="text-center text-md-left">
@@ -15,17 +33,16 @@ const FooterPage = () => {
           </MDBCol>
           <MDBCol md="3">
             <h5 className="title d-flex justify-content-center">Top Brands</h5>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            {topbrands.map(brand =>
+              <Link className="text-light d-flex justify-content-center" to={'brand/' + brand._id}>{brand.name}</Link>
+            )}
           </MDBCol>
           <MDBCol md="3">
-          <h5 className="title d-flex justify-content-center">Top categories</h5>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
-            <Link className="text-light d-flex justify-content-center" to="#!">Links</Link>
+            <h5 className="title d-flex justify-content-center">Top categories</h5>
+            {topcats.map(cat =>
+              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'category/' + cat._id}>{cat.name}</Link>
+            )}
+
           </MDBCol>
         </MDBRow>
       </MDBContainer>
@@ -34,7 +51,7 @@ const FooterPage = () => {
           &copy; {new Date().getFullYear()} Copyright: <Link to="#!" className="text-light"> GO-SHOP </Link>
         </MDBContainer>
       </div>
-    </MDBFooter>
+    </MDBFooter >
   );
 }
 
