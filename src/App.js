@@ -10,7 +10,7 @@ import Product from "./components/product";
 export const UserContext = React.createContext(null);
 
 function App() {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState(JSON.parse(localStorage.getItem("user")) || null);
   const providerValue = { user, setUser };
 
   return (

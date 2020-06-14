@@ -31,7 +31,10 @@ const Sidebar = (props) => {
   const navClases = navLinksStyles();
   // logout function
   const logout = () => {
+    fetch('http://localhost:5000/users/logout').then( res => {
     setUser();
+    localStorage.clear();
+    })
    }
   const pages = [
     {
@@ -82,7 +85,7 @@ const Sidebar = (props) => {
       <div {...rest} className={clsx(classes.root, className)}>
         <div className="text-center">
         <AccountCircleTwoToneIcon style={{ width:'100px', height:'100px', display: "inline-block", marginBottom:"0px", marginRight:'5px'}}/>
-          <h4>{data?.user?.user?.firstName} {data?.user?.user?.lastName}</h4>
+          <h4>{data?.user?.firstName} {data?.user?.lastName}</h4>
         </div>
         <Divider className={classes.divider} />
         <div className={classes.nav}>

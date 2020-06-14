@@ -7,7 +7,15 @@ import { UserContext } from "../App";
 
 const NavBarcomp = () => {
   const { user, setUser } = React.useContext(UserContext);
-  const user_id = user ? user.user._id : null;
+  const user_id = user ? user._id : null;
+
+  const logout = () => {
+    fetch('http://localhost:5000/users/logout').then( res => {
+    setUser();
+    localStorage.clear();
+    })
+   }
+
   // const [loved, setloved] = useState([]);
   // useEffect(() => {
   //   if (productid && userid) {
@@ -68,7 +76,7 @@ const NavBarcomp = () => {
                 <h3>
                   <Link to="/cart" className="nav-link text-light text-truncate">
                     <i className="fa fa-shopping-cart"></i>
-                {user.user.cart.length}
+                {user.cart.length}
               </Link>
                 </h3>
               </li> : <></>
@@ -89,7 +97,7 @@ const NavBarcomp = () => {
                 aria-labelledby="navbarDropdownMenuLink-55">
                 {(user_id == null)?<button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button>:<></>}
                 {(user_id != null)?<Link className="dropdown-item" to="#!">wishlist</Link>:<></>}
-                {(user_id != null)?<Link className="dropdown-item" to="#!">logout</Link>:<></>}
+                {(user_id != null)?<Link className="dropdown-item" to="" onClick={() => logout()}>logout</Link>:<></>}
               </div>
             </li>
           </ul>
