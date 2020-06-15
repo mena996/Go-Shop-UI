@@ -14,7 +14,7 @@ const Products = () => {
 
     //user state
     const { user, setUser } = React.useContext(UserContext);
-    const user_id = user ? user.user._id : null;
+     const user_id = user ? user._id : null;
     const [cats, setcats] = useState([]);
     const [brands, setbrands] = useState([]);
 
