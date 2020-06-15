@@ -52,8 +52,9 @@ export const globalHandleSubmit = async (
   // general url
     url = `http://localhost:5000/${currentView}/`;
   // request headers that contains auth token
+  await checkAccessTokenExpiry();
   let headers = new Headers({
-    Authorization: "Bearer " + data?.user?.token,
+    Authorization: "Bearer " + localStorage.getItem('accessToken'),
   });
   // data to be sent if the current view is products or brands, so we use FormData to send images
   let body = (payload && objectToFormData(payload)) || null;
@@ -86,10 +87,11 @@ export const globalHandleSubmit = async (
 };
 
 // function to fetch the arrays
-export const fetchData = async (currentView,user= null) => {
-  const res = await fetch(`http://localhost:5000/${currentView}`, user && {
+export const fetchData = async (currentView) => {
+  await checkAccessTokenExpiry();
+  const res = await fetch(`http://localhost:5000/${currentView}`, {
     headers: {
-      Authorization: "Bearer " + user?.token,
+      Authorization: "Bearer " + localStorage.getItem('accessToken'),
     }
   });
   return await res.json();
@@ -99,3 +101,24 @@ export const fetchDataUNAuth = async (currentView,user= null) => {
   const res = await fetch(`http://localhost:5000/${currentView}`);
   return await res.json();
 };
+
+const checkAccessTokenExpiry = async () => {
+  const expTime = localStorage.getItem('expAt');
+  const now = Math.ceil(Date.now() / 1000);
+  if (expTime > (now + 4)) return ;
+  else {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const getNewToken = await fetch("http://localhost:5000/users/refresh", {
+        method: "POST",
+        body: JSON.stringify({ refreshToken }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    const res = await getNewToken?.json();
+    const newAccessToken = res?.accessToken;
+    localStorage.setItem("accessToken", newAccessToken);
+    localStorage.setItem("expAt", res?.expAt);
+    return newAccessToken;
+  }
+}

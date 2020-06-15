@@ -16,7 +16,9 @@ const Products = () => {
   // user, loading data
   const { data, setData } = React.useContext(DataContext);
   //product to be edited
-  const [product, setProduct] = React.useState({});
+  let product = {};
+  // product image ref
+  const image = React.useRef("");
   // category and brand options in select menus
   const [options, setOptions] = React.useState({
     categories: [],
@@ -43,15 +45,11 @@ const Products = () => {
     getBookOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.loading, data.toggleUpdate]);
-  const handleChange = (e) => {
-    setProduct({ ...product, image: e.target.files[0] });
-  };
   const handleInputChange = (e) => {
     const {
       target: { name, value },
     } = e;
-    setProduct({ ...product, [name]: value });
-    console.log(product);
+    product[name] =  value;
   };
   return (
     <MaterialTable
@@ -74,7 +72,7 @@ const Products = () => {
                 id="raised-button-file"
                 type="file"
                 required
-                onChange={(e) => handleChange(e)}
+                ref={image}
               />
               <label htmlFor="raised-button-file">
                 <Button
@@ -110,7 +108,7 @@ const Products = () => {
                 name="category"
                 onChange={handleInputChange}
                 inputProps={{ "aria-label": "Without label" }}
-                value={
+                defaultValue={
                   product?.category || tableData?.rowData?.category?._id || ""
                 }
               >
@@ -135,7 +133,7 @@ const Products = () => {
                 name="brand"
                 onChange={handleInputChange}
                 inputProps={{ "aria-label": "Without label" }}
-                value={product?.brand || tableData?.rowData?.brand?._id || ""}
+                defaultValue={product?.brand || tableData?.rowData?.brand?._id || ""}
               >
                 <MenuItem value="" disabled>
                   <em>Choose brand</em>
@@ -156,7 +154,7 @@ const Products = () => {
                 null,
                 "products",
                 {
-                  image: product?.image,
+                  image: image.current?.files[0],
                   name: newData.name,
                   description: newData.description,
                   price: newData.price,
@@ -175,7 +173,7 @@ const Products = () => {
                 oldData,
                 "products",
                 {
-                  image: product?.image,
+                  image: image.current?.files[0],
                   name: newData.name,
                   description: newData.description,
                   price: newData.price,
