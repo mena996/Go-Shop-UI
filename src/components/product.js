@@ -13,8 +13,8 @@ import NavBarcomp from './NavBarcomp';
 const Product = ({ match: { params: { id } } }) => {
     const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
     const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
-    const { user, setUser } = React.useContext(UserContext);
-    const user_id = user ? user.user._id : null
+    const { user } = React.useContext(UserContext);
+    const user_id = user ? user._id : null
     const [open, setOpen] = useState(false)
 
 

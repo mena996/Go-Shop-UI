@@ -97,7 +97,7 @@ export const fetchData = async (currentView) => {
   return await res.json();
 };
 
-const checkAccessTokenExpiry = async () => {
+export const checkAccessTokenExpiry = async () => {
   const expTime = localStorage.getItem('expAt');
   const now = Math.ceil(Date.now() / 1000);
   if (expTime > (now + 4)) return ;
@@ -114,6 +114,5 @@ const checkAccessTokenExpiry = async () => {
     const newAccessToken = res?.accessToken;
     localStorage.setItem("accessToken", newAccessToken);
     localStorage.setItem("expAt", res?.expAt);
-    return newAccessToken;
   }
 }

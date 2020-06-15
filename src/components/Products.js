@@ -8,9 +8,10 @@ import { fetchData } from './adminPanel/helpers';
 
 const Products = () => {
     const [productsData, setProductsData] = React.useState({ products: [], loading: false });
+    const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
     //user state
-    const { user, setUser } = React.useContext(UserContext);
-    const user_id = user ? user.user._id : null;
+    const { user } = React.useContext(UserContext);
+    const user_id = user ? user._id : null;
 
 
     React.useEffect(() => {
@@ -90,7 +91,7 @@ const Products = () => {
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
                     <div className="container col-12 row justify-content-center">
-                        {productsData.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
+                        {productsData.products.map((product, index) => <ProductCardComp product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>)}
                     </div>
                 </div>
             </div>

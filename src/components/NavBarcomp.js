@@ -4,9 +4,11 @@ import SignUpcomp from "./SignUpcomp";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import { UserContext } from "../App";
+import { fetchData } from "./adminPanel/helpers";
 
 const NavBarcomp = () => {
   const { user, setUser } = React.useContext(UserContext);
+  const [ cartItemsCount, setCartItemsCount ] = React.useState(0);
   const user_id = user ? user._id : null;
 
   const logout = () => {
@@ -15,6 +17,8 @@ const NavBarcomp = () => {
     localStorage.clear();
     })
    }
+
+   fetchData('users/cart').then(res => setCartItemsCount( res.cart.length ));
 
   // const [loved, setloved] = useState([]);
   // useEffect(() => {
@@ -76,7 +80,7 @@ const NavBarcomp = () => {
                 <h3>
                   <Link to="/cart" className="nav-link text-light text-truncate">
                     <i className="fa fa-shopping-cart"></i>
-                {user.cart.length}
+                {cartItemsCount}
               </Link>
                 </h3>
               </li> : <></>
