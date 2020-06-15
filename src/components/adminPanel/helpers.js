@@ -116,3 +116,8 @@ export const checkAccessTokenExpiry = async () => {
     localStorage.setItem("expAt", res?.expAt);
   }
 }
+
+export const fetchDataUNAuth = async (currentView,user= null) => {
+  const res = await fetch(`http://localhost:5000/${currentView}`);
+  return await res.json();
+};

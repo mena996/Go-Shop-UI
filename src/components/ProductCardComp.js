@@ -21,7 +21,10 @@ const addToCart = async() => {
     },
     body: JSON.stringify(cartItem)
   }).then(res => {
-    res.status === 200 ? setToggleUpdate(!toggleUpdate) : alert("Couldn't add product to cart");
+    if (res.status === 200) {
+      setToggleUpdate(!toggleUpdate);
+      alert('Product was added successfully');
+     } else alert("Couldn't add product to cart");
   })
 }
 
