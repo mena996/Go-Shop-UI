@@ -94,3 +94,8 @@ export const fetchData = async (currentView,user= null) => {
   });
   return await res.json();
 };
+
+export const fetchDataUNAuth = async (currentView,user= null) => {
+  const res = await fetch(`http://localhost:5000/${currentView}`);
+  return await res.json();
+};

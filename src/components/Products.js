@@ -1,25 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProductCardComp from './ProductCardComp';
 import NavBarcomp from './NavBarcomp';
 import Footercomp from './Footercomp';
 import { UserContext } from '../App';
-import { fetchData } from './adminPanel/helpers';
+import { fetchDataUNAuth } from './adminPanel/helpers';
+import Axios from 'axios';
 
+let brandsfilter = [], catsfilter = [];
 
 const Products = () => {
     const [productsData, setProductsData] = React.useState({ products: [], loading: false });
+    const [productsDataFiltered, setProductsDataFiltered] = React.useState({ products: [], loading: false });
+
     //user state
     const { user, setUser } = React.useContext(UserContext);
     const user_id = user ? user.user._id : null;
+    const [cats, setcats] = useState([]);
+    const [brands, setbrands] = useState([]);
 
+    function filterBrand(e) {
+        if (e.target.checked) {
+            brandsfilter.push(e.target.value);
+        }
+        else {
+            brandsfilter = brandsfilter.filter((element) => element != e.target.value);
+        }
+        filter();
+    }
+    function filterCat(e) {
+        if (e.target.checked) {
+            catsfilter.push(e.target.value);
+        }
+        else {
+            catsfilter = catsfilter.filter((element) => element != e.target.value);
+        }
+        filter();
+    }
+    function filter() {
+        if (catsfilter.length === 0 && brandsfilter.length === 0) {
+            setProductsDataFiltered({ ...productsDataFiltered, products: productsData.products });
+        }
+        else if (catsfilter.length === 0) {
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => brandsfilter.includes(product.brand._id))) })
+        }
+        else if (brandsfilter.length === 0) {
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => catsfilter.includes(product.category._id))) })
+        } else {
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => (catsfilter.includes(product.category._id) && brandsfilter.includes(product.brand._id)))) })
+        }
+    }
 
     React.useEffect(() => {
         //setting loading to true
         setProductsData({ ...productsData, loading: true })
-        fetchData('products').then(res => setProductsData({ ...productsData, products: res }));
+        fetchDataUNAuth('products').then(res => {
+            setProductsData({ ...productsData, products: res });
+            setProductsDataFiltered({ ...productsDataFiltered, products: res });
+        });
         //setting loading to false
         setProductsData({ ...productsData, loading: false })
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        Axios.get('http://localhost:5000/categories')
+            .then((res) => {
+                setcats(res.data);
+            })
+        Axios.get('http://localhost:5000/brands')
+            .then((res) => {
+                setbrands(res.data);
+            })
     }, [productsData.loading]);
 
     return (
@@ -34,24 +82,14 @@ const Products = () => {
                         <div className="filter-content">
                             <div className="card-body">
                                 <form>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Mersedes Benz
-				                        </span>
-                                    </label>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Nissan Altima
-                                        </span>
-                                    </label>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Another Brand
-                                        </span>
-                                    </label>
+                                    {brands.map((brand, index) =>
+                                        <label className="form-check">
+                                            <input className="form-check-input" type="checkbox" value={brand._id} onClick={filterBrand} />
+                                            <span className="form-check-label">
+                                                {brand.name}
+                                            </span>
+                                        </label>
+                                    )}
                                 </form>
 
                             </div>
@@ -64,24 +102,14 @@ const Products = () => {
                         <div className="filter-content">
                             <div className="card-body">
                                 <form>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Mersedes Benz
-				                        </span>
-                                    </label>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Nissan Altima
-                                        </span>
-                                    </label>
-                                    <label className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" />
-                                        <span className="form-check-label">
-                                            Another Brand
-                                        </span>
-                                    </label>
+                                    {cats.map((cat, index) =>
+                                        <label className="form-check">
+                                            <input className="form-check-input" type="checkbox" value={cat._id} onClick={filterCat} />
+                                            <span className="form-check-label">
+                                                {cat.name}
+                                            </span>
+                                        </label>
+                                    )}
                                 </form>
 
                             </div>
@@ -90,7 +118,7 @@ const Products = () => {
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
                     <div className="container col-12 row justify-content-center">
-                        {productsData.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
+                        {productsDataFiltered.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
                     </div>
                 </div>
             </div>
