@@ -10,13 +10,17 @@ import Categories from "./components/Categories";
 import Brands from "./components/Brands";
 
 export const UserContext = React.createContext(null);
+export const SearchContext = React.createContext(null);
 
 function App() {
   const [user, setUser] = React.useState(JSON.parse(localStorage.getItem("user")) || null);
   const providerValue = { user, setUser };
+  const [ search, setSearch] = React.useState([]);
+  const searchProviderValue = { search, setSearch };
 
   return (
     <UserContext.Provider value={providerValue}>
+      <SearchContext.Provider value={searchProviderValue}>
       <BrowserRouter>
         <Switch>
           <Route path="/admin" component={Admin} />
@@ -31,6 +35,7 @@ function App() {
           {/* <Route path="/brand/:id" component={Brand} /> */}
         </Switch>
       </BrowserRouter>
+      </SearchContext.Provider>
     </UserContext.Provider>
   );
 }

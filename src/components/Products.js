@@ -2,21 +2,49 @@ import React, { useState } from 'react';
 import ProductCardComp from './ProductCardComp';
 import NavBarcomp from './NavBarcomp';
 import Footercomp from './Footercomp';
-import { UserContext } from '../App';
+import { UserContext, SearchContext } from '../App';
 import { fetchDataUNAuth } from './adminPanel/helpers';
 import Axios from 'axios';
 
 let brandsfilter = [], catsfilter = [];
-
 const Products = () => {
     const [productsData, setProductsData] = React.useState({ products: [], loading: false });
     const [productsDataFiltered, setProductsDataFiltered] = React.useState({ products: [], loading: false });
-
+    const { search, setSearch } = React.useContext(SearchContext);
     //user state
     const { user, setUser } = React.useContext(UserContext);
-     const user_id = user ? user._id : null;
+    const user_id = user ? user._id : null;
     const [cats, setcats] = useState([]);
     const [brands, setbrands] = useState([]);
+    const [searchfilter, setSearchfilter] = useState([]);
+
+
+    React.useEffect(() => {
+        //setting loading to true
+        setProductsData({ ...productsData, loading: true })
+        fetchDataUNAuth('products').then(res => {
+            setProductsData({ ...productsData, products: res });
+            setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.name.includes(search))) });
+        });
+        //setting loading to false
+        setProductsData({ ...productsData, loading: false })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        Axios.get('http://localhost:5000/categories')
+            .then((res) => {
+                setcats(res.data);
+            })
+        Axios.get('http://localhost:5000/brands')
+            .then((res) => {
+                setbrands(res.data);
+            })
+    }, [productsData.loading]);
+
+    if (search != searchfilter && search) {
+        setSearchfilter(search);
+        filter();
+        
+    }
+
 
     function filterBrand(e) {
         if (e.target.checked) {
@@ -38,37 +66,17 @@ const Products = () => {
     }
     function filter() {
         if (catsfilter.length === 0 && brandsfilter.length === 0) {
-            setProductsDataFiltered({ ...productsDataFiltered, products: productsData.products });
+            setProductsDataFiltered({ ...productsDataFiltered, products: productsData.products.filter((product) => (product.name.includes(search))) });
         }
         else if (catsfilter.length === 0) {
-            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => brandsfilter.includes(product.brand._id))) })
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => (brandsfilter.includes(product.brand._id) && product.name.includes(search)))) })
         }
         else if (brandsfilter.length === 0) {
-            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => catsfilter.includes(product.category._id))) })
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => catsfilter.includes(product.category._id) && (product.name.includes(search)))) })
         } else {
-            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => (catsfilter.includes(product.category._id) && brandsfilter.includes(product.brand._id)))) })
+            setProductsDataFiltered({ ...productsDataFiltered, products: (productsData.products.filter((product) => (catsfilter.includes(product.category._id) && brandsfilter.includes(product.brand._id) && (product.name.includes(search))))) })
         }
     }
-
-    React.useEffect(() => {
-        //setting loading to true
-        setProductsData({ ...productsData, loading: true })
-        fetchDataUNAuth('products').then(res => {
-            setProductsData({ ...productsData, products: res });
-            setProductsDataFiltered({ ...productsDataFiltered, products: res });
-        });
-        //setting loading to false
-        setProductsData({ ...productsData, loading: false })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        Axios.get('http://localhost:5000/categories')
-            .then((res) => {
-                setcats(res.data);
-            })
-        Axios.get('http://localhost:5000/brands')
-            .then((res) => {
-                setbrands(res.data);
-            })
-    }, [productsData.loading]);
 
     return (
         <div className="container flex m-0 col-12 p-0">

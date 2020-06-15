@@ -1,48 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import SignUpcomp from "./SignUpcomp";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Login from "./Login";
-import { UserContext } from "../App";
+import { UserContext, SearchContext } from "../App";
 
 const NavBarcomp = () => {
+  const { search, setSearch } = React.useContext(SearchContext);
   const { user, setUser } = React.useContext(UserContext);
+  const [preSearch, setPreSearch] = useState([]);
   const user_id = user ? user._id : null;
 
   const logout = () => {
-    fetch('http://localhost:5000/users/logout').then( res => {
-    setUser();
-    localStorage.clear();
+    fetch('http://localhost:5000/users/logout').then(res => {
+      setUser();
+      localStorage.clear();
     })
-   }
+  }
+  function changesearch() {
+    setSearch(preSearch);
+  }
+  React.useEffect(() => {
+    setPreSearch(search);
+  }, []);
 
-  // const [loved, setloved] = useState([]);
-  // useEffect(() => {
-  //   if (productid && userid) {
-  //   Axios.get(`http://localhost:5000/products/favorite/${userid}/${productid}`)
-  //     .then((res) => {
-  //       // console.log(res.data[0].rate);
-  //       try {
-  //        if(res.data[0])
-  //         setloved(true);
-  //        else
-  //          setloved(false);
-  //       } catch (error) {
-  //         setloved(false);
-  //       }
-
-  //     })
-  //   }
-  // }, []);
-
-
-  // const changerate = (e) => {
-  //   const { target: { className } } = e
-  //   setloved(!loved);
-  //   console.log(className);
-  //   Axios.post('http://localhost:5000/products/favorite', { "user": userid, "product": productid }).then((messages) => { console.log(messages); });
-  // }
-  // if (userid) {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark col-12 sticky-top">
@@ -67,17 +48,17 @@ const NavBarcomp = () => {
             </li>
           </ul>
           <ul className="navbar-nav ml-auto nav-flex-icons">
-            <form className="form-inline my-2 my-lg-0">
-              <input className="form-control mr-sm-2" type="search" placeholder="Search" />
-              <button className="btn btn-outline-light my-2 my-sm-0 mr-1" type="submit">Search</button>
-            </form>
+            <div className="form-inline my-2 my-lg-0">
+              <input className="form-control mr-sm-2" type="search" placeholder="Search" value={preSearch} onChange={e => { const { target: { value } } = e; setPreSearch(value) }} />
+              <Link className="btn btn-outline-light text-light my-2 my-sm-0 mr-1" type="submit" onClick={changesearch} to="/products">Search</Link>
+            </div>
             {(user_id != null) ?
               <li className="nav-item">
                 <h3>
                   <Link to="/cart" className="nav-link text-light text-truncate">
                     <i className="fa fa-shopping-cart"></i>
-                {user.cart.length}
-              </Link>
+                    {user.cart.length}
+                  </Link>
                 </h3>
               </li> : <></>
             }
@@ -95,9 +76,9 @@ const NavBarcomp = () => {
               </Link>
               <div className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                 aria-labelledby="navbarDropdownMenuLink-55">
-                {(user_id == null)?<button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button>:<></>}
-                {(user_id != null)?<Link className="dropdown-item" to="#!">wishlist</Link>:<></>}
-                {(user_id != null)?<Link className="dropdown-item" to="" onClick={() => logout()}>logout</Link>:<></>}
+                {(user_id == null) ? <button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button> : <></>}
+                {(user_id != null) ? <Link className="dropdown-item" to="#!">wishlist</Link> : <></>}
+                {(user_id != null) ? <Link className="dropdown-item" to="" onClick={() => logout()}>logout</Link> : <></>}
               </div>
             </li>
           </ul>
@@ -115,7 +96,6 @@ const NavBarcomp = () => {
       </div>
     </>
   )
-  // }
 };
 
 export default NavBarcomp;
