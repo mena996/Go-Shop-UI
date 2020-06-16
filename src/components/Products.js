@@ -92,7 +92,7 @@ const Products = () => {
                             <div className="card-body">
                                 <form>
                                     {brands.map((brand, index) =>
-                                        <label className="form-check">
+                                        <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
                                             <input className="form-check-input" type="checkbox" value={brand._id} onClick={filterBrand} />
                                             <span className="form-check-label">
                                                 {brand.name}
@@ -112,7 +112,7 @@ const Products = () => {
                             <div className="card-body">
                                 <form>
                                     {cats.map((cat, index) =>
-                                        <label className="form-check">
+                                        <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
                                             <input className="form-check-input" type="checkbox" value={cat._id} onClick={filterCat} />
                                             <span className="form-check-label">
                                                 {cat.name}
@@ -127,7 +127,7 @@ const Products = () => {
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
                     <div className="container col-12 row justify-content-center">
-                        {productsDataFiltered.products.map((product, index) => <ProductCardComp product={product} userid={user_id}  toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>)}
+                        {productsDataFiltered.products.map((product, index) => <ProductCardComp key={Math.ceil(Math.random() * 100000)} product={product} userid={user_id}  toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>)}
                     </div>
                 </div>
             </div>

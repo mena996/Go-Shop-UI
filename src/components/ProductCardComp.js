@@ -29,7 +29,7 @@ const addToCart = async() => {
 }
 
   return (
-    <div className="pcard card m-3">
+    <div className="pcard card m-3" >
       <img className="card-img" src={product.image[0]} alt="product" width="200px" height="200px" />
       <div className="card-img-overlay d-flex justify-content-end h-25">
         <div className="card-link like">

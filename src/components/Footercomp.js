@@ -34,7 +34,7 @@ const FooterPage = () => {
           <MDBCol md="3">
             <h5 className="title d-flex justify-content-center">Top Brands</h5>
             {topbrands.map(brand =>
-              <Link className="text-light d-flex justify-content-center" to={'brand/' + brand._id}>{brand.name}</Link>
+              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'brand/' + brand._id}>{brand.name}</Link>
             )}
           </MDBCol>
           <MDBCol md="3">
