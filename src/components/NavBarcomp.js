@@ -4,11 +4,13 @@ import SignUpcomp from "./SignUpcomp";
 import { Link, Redirect } from "react-router-dom";
 import Login from "./Login";
 import { UserContext, SearchContext } from "../App";
+import { fetchData } from "./adminPanel/helpers";
 
 const NavBarcomp = () => {
   const { search, setSearch } = React.useContext(SearchContext);
   const { user, setUser } = React.useContext(UserContext);
   const [preSearch, setPreSearch] = useState([]);
+  const [ cartItemsCount, setCartItemsCount ] = React.useState(0);
   const user_id = user ? user._id : null;
 
   const logout = () => {
@@ -23,7 +25,7 @@ const NavBarcomp = () => {
   React.useEffect(() => {
     setPreSearch(search);
   }, []);
-
+   fetchData('users/cart').then(res => setCartItemsCount( res.cart.length ));
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark col-12 sticky-top">
@@ -57,8 +59,8 @@ const NavBarcomp = () => {
                 <h3>
                   <Link to="/cart" className="nav-link text-light text-truncate">
                     <i className="fa fa-shopping-cart"></i>
-                    {user.cart.length}
-                  </Link>
+                {cartItemsCount}
+              </Link>
                 </h3>
               </li> : <></>
             }

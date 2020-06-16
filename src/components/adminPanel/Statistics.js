@@ -30,19 +30,19 @@ export default function Statistics() {
         <Grid item lg={3} sm={6} xl={3} xs={12}>
           <StatisticsCard
             title="TOTAL USERS"
-            number={stats?.allUsersCount}
+            number={stats?.allUsersCount || 0}
             iconColor="darkblue"
             icon={<PeopleIcon className={classes.icon} />}
             extended={{
-              first: `${stats?.adminsCount} Admins`,
-              second: `${stats?.usersCount} users`,
+              first: `${stats?.adminsCount || 0} Admins`,
+              second: `${stats?.usersCount || 0} users`,
             }}
           />
         </Grid>
         <Grid item lg={3} sm={6} xl={3} xs={12}>
           <StatisticsCard
             title="PRODUCTS"
-            number={stats?.productsCount}
+            number={stats?.productsCount || 0}
             iconColor="black"
             icon={<ShoppingBasketIcon className={classes.icon} />}
           />
@@ -50,12 +50,12 @@ export default function Statistics() {
         <Grid item lg={3} sm={6} xl={3} xs={12}>
           <StatisticsCard
             title="ORDERS"
-            number={stats?.allOrdersCount}
+            number={stats?.allOrdersCount || 0}
             iconColor="gray"
             icon={<ReceiptIcon className={classes.icon} />}
             extended={{
-              first: `${stats?.deliverdOrdersCount} Delivered`,
-              second: `${stats?.pendingOrdersCount} Pending`,
+              first: `${stats?.deliverdOrdersCount || 0} Delivered`,
+              second: `${stats?.pendingOrdersCount || 0} Pending`,
             }}
           />
         </Grid>
@@ -70,7 +70,7 @@ export default function Statistics() {
         <Grid item lg={3} md={6} xl={3} xs={12}>
           <StatisticsCard
             title="CATEGORIES"
-            number={stats?.categoriesCount}
+            number={stats?.categoriesCount || 0}
             iconColor="purple"
             icon={<CategoryIcon className={classes.icon} />}
           />
@@ -78,7 +78,7 @@ export default function Statistics() {
         <Grid item lg={8} md={6} xl={3} xs={12}>
           <StatisticsCard
             title="TOTAL SALES"
-            number={`$ ${stats?.totalSales}`}
+            number={`$ ${stats?.totalSales?.toFixed(2) || 0}`}
             iconColor="green"
             icon={<AttachMoneyIcon className={classes.icon} />}
           />

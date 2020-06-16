@@ -10,10 +10,11 @@ let brandsfilter = [], catsfilter = [];
 const Products = () => {
     const [productsData, setProductsData] = React.useState({ products: [], loading: false });
     const [productsDataFiltered, setProductsDataFiltered] = React.useState({ products: [], loading: false });
-    const { search, setSearch } = React.useContext(SearchContext);
+    const { search } = React.useContext(SearchContext);
     //user state
-    const { user, setUser } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
     const user_id = user ? user._id : null;
+    const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
     const [cats, setcats] = useState([]);
     const [brands, setbrands] = useState([]);
     const [searchfilter, setSearchfilter] = useState([]);
@@ -39,7 +40,7 @@ const Products = () => {
             })
     }, [productsData.loading]);
 
-    if (search != searchfilter && search) {
+    if (search != searchfilter ) {
         setSearchfilter(search);
         filter();
         
@@ -126,7 +127,7 @@ const Products = () => {
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
                     <div className="container col-12 row justify-content-center">
-                        {productsDataFiltered.products.map((product, index) => <ProductCardComp product={product} userid={user_id} />)}
+                        {productsDataFiltered.products.map((product, index) => <ProductCardComp product={product} userid={user_id}  toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>)}
                     </div>
                 </div>
             </div>
