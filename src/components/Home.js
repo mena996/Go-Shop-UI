@@ -46,7 +46,7 @@ const Home = () => {
             <div className="filter-content">
               <div className="card-body">
                   {brands.map((brand, index) =>
-                    <label className="form-check">
+                    <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
                       <Link className="form-check-label" to={"/category/" + brand._id}>
                         <img src={brand.image} alt="product" width="30px" height="30px" />
                         <span className="ml-2">
@@ -61,7 +61,7 @@ const Home = () => {
         </div>
         <div className="container col-sm-12 col-xl-9 col-md justify-content-center">
           <div className="container col-10 justify-content-center mt-5 mb-5">
-            <img src="http://localhost:5000/public/images/mainPhoto.jpg" className="img-fluid" alt="product" />
+            <img src="http://localhost:5000/public/mainPhoto.jpg" className="img-fluid" alt="product" />
           </div>
           {/* <div className="container col-12 row justify-content-center">
             {productsDataFiltered.products.map((product, index) => <ProductCardComp product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate} />)}

@@ -33,7 +33,7 @@ const addToCart = async() => {
       <img className="card-img" src={product.image[0]} alt="product" width="200px" height="200px" />
       <div className="card-img-overlay d-flex justify-content-end h-25">
         <div className="card-link like">
-          <Favoritecomp productid={product._id} userid={userid} />
+          <Favoritecomp  productid={product._id} userid={userid} />
         </div>
       </div>
       <div className="card-body">
