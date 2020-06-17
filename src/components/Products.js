@@ -90,17 +90,14 @@ const Products = () => {
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
-                                <form>
-                                    {brands.map((brand, index) =>
-                                        <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
+                                    {brands.map((brand) =>
+                                        <label className="form-check" key={"b"+brand._id}>
                                             <input className="form-check-input" type="checkbox" value={brand._id} onClick={filterBrand} />
                                             <span className="form-check-label">
                                                 {brand.name}
                                             </span>
                                         </label>
                                     )}
-                                </form>
-
                             </div>
                         </div>
                     </article>
@@ -110,17 +107,14 @@ const Products = () => {
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
-                                <form>
-                                    {cats.map((cat, index) =>
-                                        <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
+                                    {cats.map((cat) =>
+                                        <label className="form-check" key={"c"+cat._id} >
                                             <input className="form-check-input" type="checkbox" value={cat._id} onClick={filterCat} />
                                             <span className="form-check-label">
                                                 {cat.name}
                                             </span>
                                         </label>
                                     )}
-                                </form>
-
                             </div>
                         </div>
                     </article>
