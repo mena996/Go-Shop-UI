@@ -40,7 +40,7 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
         <Link to={'/product/' + product._id}>
           <h4 className="card-title text-truncate">{product.name}</h4>
         </Link>
-        {product.category.name ? <h6 className="card-subtitle mb-2 text-muted">category: {product.category.name}</h6> : console.log(product.category)}
+        {product.category.name ?<Link to={'/category/' + product.category._id}> <h6 className="card-subtitle mb-2 text-muted">category: {product.category.name}</h6></Link> : ""}
         <p className="card-text  text-truncate">{product.description}</p>
         <div className="justify-content-between align-items-center">
           <div className="price text-success"><h5 className="mt-0">{product.price} L.E</h5></div>
