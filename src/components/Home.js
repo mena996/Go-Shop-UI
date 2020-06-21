@@ -41,13 +41,13 @@ const Home = () => {
         <div className="card col-sm-7 col-xl-2 col-md-4 m-3 ">
           <article className="card-group-item">
             <header className="card-header">
-              <h6 className="title">categories </h6>
+              <h6 className="title">brands</h6>
             </header>
             <div className="filter-content">
               <div className="card-body">
                   {brands.map((brand, index) =>
                     <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
-                      <Link className="form-check-label" to={"/category/" + brand._id}>
+                      <Link className="form-check-label" to={"/brand/" + brand._id}>
                         <img src={brand.image} alt="product" width="30px" height="30px" />
                         <span className="ml-2">
                           {brand.name}

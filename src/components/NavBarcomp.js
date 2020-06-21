@@ -80,6 +80,7 @@ const NavBarcomp = () => {
                 aria-labelledby="navbarDropdownMenuLink-55">
                 {(user_id == null) ? <button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button> : <></>}
                 {(user_id != null) ? <Link className="dropdown-item" to="/wishlist">wishlist</Link> : <></>}
+                {(user_id != null) ? <Link className="dropdown-item" to="/favorite">favorite</Link> : <></>}
                 {(user_id != null) ? <Link className="dropdown-item" to="" onClick={() => logout()}>logout</Link> : <></>}
               </div>
             </li>

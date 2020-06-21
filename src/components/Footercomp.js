@@ -34,13 +34,13 @@ const FooterPage = () => {
           <MDBCol md="3">
             <h5 className="title d-flex justify-content-center">Top Brands</h5>
             {topbrands.map(brand =>
-              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'brand/' + brand._id}>{brand.name}</Link>
+              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'/brand/' + brand._id}>{brand.name}</Link>
             )}
           </MDBCol>
           <MDBCol md="3">
             <h5 className="title d-flex justify-content-center">Top categories</h5>
             {topcats.map(cat =>
-              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'category/' + cat._id}>{cat.name}</Link>
+              <Link key={Math.ceil(Math.random() * 100000)} className="text-light d-flex justify-content-center" to={'/category/' + cat._id}>{cat.name}</Link>
             )}
 
           </MDBCol>

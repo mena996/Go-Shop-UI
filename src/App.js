@@ -8,6 +8,8 @@ import Products from './components/Products';
 import Product from "./components/product";
 import Categories from "./components/Categories";
 import Brands from "./components/Brands";
+import CategoryProduct from "./components/CategoryProduct";
+import BrandProduct from "./components/BrandProduct";
 
 export const UserContext = React.createContext(null);
 export const SearchContext = React.createContext(null);
@@ -27,12 +29,12 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/cart" component={Cart} />
           {/* <Route path="/admin" component={Admin} /> */}
-          {/* <Route path="/category/:id" component={CategoryProduct} /> */}
+          <Route path="/category/:id" component={CategoryProduct} />
           <Route path="/categories" component={Categories} />
           <Route path="/products" component={Products} />
           <Route path="/product/:id" component={Product} />
           <Route path="/brands" component={Brands} />
-          {/* <Route path="/brand/:id" component={Brand} /> */}
+          <Route path="/brand/:id" component={BrandProduct} />
         </Switch>
       </BrowserRouter>
       </SearchContext.Provider>
