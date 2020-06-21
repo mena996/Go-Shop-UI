@@ -10,6 +10,7 @@ import Categories from "./components/Categories";
 import Brands from "./components/Brands";
 import CategoryProduct from "./components/CategoryProduct";
 import BrandProduct from "./components/BrandProduct";
+import Favorite from "./components/Favorite";
 
 export const UserContext = React.createContext(null);
 export const SearchContext = React.createContext(null);
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin" component={Admin} />
           <Route exact path="/" component={Home} />
           <Route path="/cart" component={Cart} />
+          <Route path="/favorite" component={Favorite} />
           {/* <Route path="/admin" component={Admin} /> */}
           <Route path="/category/:id" component={CategoryProduct} />
           <Route path="/categories" component={Categories} />
