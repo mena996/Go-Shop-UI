@@ -2,22 +2,26 @@ import React from "react";
 import MaterialTable from "material-table";
 import { Icons, fetchData, globalHandleSubmit } from "./helpers";
 import { DataContext } from "./Admin";
+import { Button } from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const Categories = () => {
-//categories array
+  //categories array
   const [categories, setCategories] = React.useState([]);
-// user, loading data
+  // user, loading data
   const { data, setData } = React.useContext(DataContext);
+  // chosen image
+  const image = React.useRef();
 
   React.useEffect(() => {
-  //setting loading to true
-    setData({...data, loading: true})
-  // fetching categories
+    //setting loading to true
+    setData({ ...data, loading: true })
+    // fetching categories
     fetchData('categories').then(res => setCategories(res));
-  //setting loading to false
-    setData({...data, loading: false})
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.loading,data.toggleUpdate]);
+    //setting loading to false
+    setData({ ...data, loading: false })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.loading, data.toggleUpdate]);
   return (
     <MaterialTable
       icons={Icons}
@@ -28,6 +32,39 @@ const Categories = () => {
           render: (rowData) => rowData?.tableData.id + 1,
           editable: "never",
         },
+        {
+          title: "Category Picture",
+          field: "image",
+          editComponent: () => (
+            <div value="photo">
+              <input
+                accept=".png, .jpg, .jpeg"
+                style={{ display: "none" }}
+                id="raised-button-file"
+                type="file"
+                required
+                ref={image}
+              />
+              <label htmlFor="raised-button-file">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Upload
+                </Button>
+              </label>
+            </div>
+          ),
+          render: (rowData) => (
+            <img
+              style={{ height: 200, width: 150 }}
+              src={rowData.image}
+              alt="Category Img"
+            />
+          ),
+        },
         { title: "Category Name", field: "name" },
       ]}
       editable={{
@@ -37,10 +74,15 @@ const Categories = () => {
               globalHandleSubmit(
                 null,
                 "categories",
-                { name: newData.name },
+                { image: image.current?.files[0], name: newData.name},
                 data,
                 setData
-                ).then(res => {if (res) { setData({...data, toggleUpdate: !data.toggleUpdate});resolve()} else reject()})
+              ).then(res => {
+                if (res) {
+                  setData({ ...data, toggleUpdate: !data.toggleUpdate }); 
+                  resolve();
+                } else reject();
+              })
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
@@ -49,10 +91,10 @@ const Categories = () => {
               globalHandleSubmit(
                 oldData,
                 "categories",
-                { name: newData.name },
+                { image: image.current?.files[0], name: newData.name },
                 data,
                 setData
-                ).then(res => (res) ? resolve() : reject(alert("error: Name is required")))
+              ).then(res => (res) ? resolve() : reject(alert("error: All fields are required")))
             }, 100);
           }),
         onRowDelete: (oldData) =>
@@ -65,7 +107,7 @@ const Categories = () => {
                 data,
                 setData,
                 true
-                ).then(res => (res) ? resolve() : reject(alert("error: Name is required")))
+              ).then(res => (res) ? resolve() : reject(alert("error: All fields are required")))
             }, 100);
           }),
       }}

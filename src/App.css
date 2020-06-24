@@ -28,10 +28,64 @@
   color: #61dafb;
 }
 
+.owl-carousel {
+  border: 1px solid #ccc;
+  padding: 1.8em;
+  /* max-height: 370px; */
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  -webkit-box-shadow: 0px 5px 5px -2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 5px 5px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 5px -2px rgba(0, 0, 0, 0.5);
+}
+
+.owl-title,
+.any-title {
+  padding: 0 0.5em;
+  border: 1px solid #ccc;
+  border-bottom-color: white;
+  margin-bottom: -1px;
+  z-index: 1000;
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  font-weight: bold;
+}
+
+
+.owl-carousel {
+  width: 100%;
+  z-index: 1;
+}
+
+.owl-item {
+  width: 220px;
+  margin-right: 10px;
+}
+
+.owl-item .pcard
+{
+  max-width: 13rem;
+  min-width: 13rem;
+}
+
+.side-img {
+  display: flex;
+  align-items: flex-start;
+}
+
+.img-fluid {
+  margin: 5px;
+  width: 100%;
+  height: auto;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

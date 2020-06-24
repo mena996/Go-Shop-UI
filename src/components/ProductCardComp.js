@@ -29,7 +29,7 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
   }
 
   return (
-    <div className="pcard card m-3" >
+    <div className="pcard card m-3 " >
       <img className="card-img" src={product.image[0]} alt="product" width="200px" height="200px" />
       <div className="card-img-overlay d-flex justify-content-end h-25">
         <div className="card-link like">
@@ -44,7 +44,7 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
         <p className="card-text  text-truncate">{product.description}</p>
         <div className="justify-content-between align-items-center">
           <div className="price text-success"><h5 className="mt-0">{product.price} L.E</h5></div>
-          <Button color='default' style={{ backgroundColor: 'grey' }} className="btn btn-danger float-right mt-0" onClick={() => addToCart()}><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
+          <Button color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger float-right mt-0" onClick={() => addToCart()}><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
         </div>
       </div>
     </div>

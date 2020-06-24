@@ -69,7 +69,7 @@ export const globalHandleSubmit = async (
     method = "POST";
   }
   // if current view is categories use application/json as a content type and use JSON.stringify with the body
-  if (["categories", "orders", "users"].includes(currentView)) {
+  if (["orders", "users"].includes(currentView)) {
     headers.append("Content-Type", "application/json");
     body = (payload && JSON.stringify(payload)) || null;
   }

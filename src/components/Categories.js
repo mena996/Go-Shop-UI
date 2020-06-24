@@ -22,6 +22,7 @@ const Categories = () => {
 
           {categories.map((category) =>
             <div className="card col-sm-7 col-xl-2 col-md-4 m-3 " key={category._id}>
+              <img className="card-img-top" src={category.image} height="200"  alt="brand" />
               <div className="card-body">
                 <h5 className="card-title">{category.name}</h5>
                 <Link to={"/category/" + category._id} className="btn btn-primary">show products</Link>
