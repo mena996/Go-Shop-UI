@@ -4,26 +4,44 @@ import { Icons, fetchData, globalHandleSubmit } from "./helpers";
 import { DataContext } from "./Admin";
 import { Button } from "@material-ui/core";
 
-const Users = () => {
-  //users array
-  const [users, setUsers] = React.useState([]);
+const AdminUsers = () => {
+  //admins array
+  const [admins, setAdmins] = React.useState([]);
   // user, loading data
   const { data, setData } = React.useContext(DataContext);
 
   React.useEffect(() => {
     //setting loading to true
     setData({ ...data, loading: true })
-    // fetching users
-    fetchData('users').then(res => setUsers(res.filter((u)=> !u.isadmin)));
+    // fetching admins
+    fetchData('users').then(res => setAdmins(res.filter((u)=> u.isadmin && data.user._id !== u._id)));
     //setting loading to false
     setData({ ...data, loading: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.loading, data.toggleUpdate]);
 
+   const generatePromotionButton = (user) => {
+    return (
+      <Button
+        variant="contained"
+        style={{ textTransform: "none" }}
+        onClick={() => {
+          submitUserRole(user, false);
+        }}
+      >
+        Demote to user
+      </Button>
+    );
+  };
+
+  const submitUserRole = (user, isadmin) => {
+    globalHandleSubmit(user, "users", { isadmin }, data, setData);
+  };
+
   return (
     <MaterialTable
       icons={Icons}
-      title="Users"
+      title="Admins"
       columns={[
         {
           title: "ID",
@@ -36,6 +54,9 @@ const Users = () => {
         { title: "Email", field: "email" },
         { title: "Phone", field: "phone" },
         { title: "Address", field: "address" },
+        { title: "Action", 
+            render: (rowData) => generatePromotionButton(rowData)
+        },
       ]}
       editable={{
         onRowAdd: (newData) =>
@@ -44,7 +65,7 @@ const Users = () => {
               globalHandleSubmit(
                 null,
                 "users",
-                newData,
+                {...newData, isadmin: true},
                 data,
                 setData
               ).then(res => {
@@ -61,7 +82,7 @@ const Users = () => {
               globalHandleSubmit(
                 oldData,
                 "users",
-                newData,
+                {...newData, isadmin: true},
                 data,
                 setData
               ).then(res => (res) ? resolve() : reject(alert("error: All fields are required")))
@@ -81,7 +102,7 @@ const Users = () => {
             }, 100);
           }),
       }}
-      data={users}
+      data={admins}
       options={{
         paging: false
       }}
@@ -89,4 +110,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default AdminUsers;

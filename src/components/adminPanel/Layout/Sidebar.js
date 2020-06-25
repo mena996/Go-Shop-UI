@@ -20,6 +20,7 @@ import ShopIcon from "@material-ui/icons/Shop";
 import InputIcon from "@material-ui/icons/Input";
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { UserContext } from "../../../App";
 
 const Sidebar = (props) => {
@@ -46,6 +47,11 @@ const Sidebar = (props) => {
       title: "Users",
       component: "users",
       icon: <PeopleIcon />,
+    },
+    {
+      title: "Admins",
+      component: "admins",
+      icon: <SupervisorAccountIcon />,
     },
     {
       title: "Brands",
