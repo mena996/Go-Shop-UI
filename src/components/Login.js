@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Cookies from 'js-cookie';
 
 // error variable if any
 let error = null;
@@ -34,30 +35,18 @@ const Login = ({UserContext, isAdmin}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (authData.username && authData.password){
-    const res = await fetch("http://localhost:5000/users/login", {
+    const res = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
       body: JSON.stringify(authData),
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include'
     });
 // if user is successfully logged in as an admin or user
     if((res.status === 201 && isAdmin) || (res.status === 200 && !isAdmin)){
-      const response = await res.json();
-      localStorage.setItem("accessToken", response?.accessToken);
-      localStorage.setItem("refreshToken", response?.refreshToken);
-      localStorage.setItem("expAt", response?.expAt);
-      const getUser = await fetch("http://localhost:5000/users/me", {
-        method: "POST",
-        body: JSON.stringify({ token: response.accessToken }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const user = await getUser.json();
-      localStorage.setItem("user", JSON.stringify(user?.user));
-      // user.token = response.accessToken;
-      setImmediate(()=> setUser(user));
+      error = null;
+      setImmediate(()=> setUser(Cookies.getJSON('userData')));
       !isAdmin && window.location.reload(false)
     }
 // if an user is trying to access admin panel

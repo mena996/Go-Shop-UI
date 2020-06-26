@@ -1,4 +1,5 @@
 import { objectToFormData } from 'object-to-formdata';
+import Cookies from 'js-cookie';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -48,14 +49,9 @@ export const globalHandleSubmit = async (
   // if it a delete request or not (false by default)
   remove = false
 ) => {
-  let method,
+  let method,headers,
   // general url
     url = `http://localhost:5000/${currentView}/`;
-  // request headers that contains auth token
-  await checkAccessTokenExpiry();
-  let headers = new Headers({
-    Authorization: "Bearer " + localStorage.getItem('accessToken'),
-  });
   // data to be sent if the current view is products or brands, so we use FormData to send images
   let body = (payload && objectToFormData(payload)) || null;
   // if there is an old item
@@ -70,7 +66,7 @@ export const globalHandleSubmit = async (
   }
   // if current view is categories use application/json as a content type and use JSON.stringify with the body
   if (["orders", "users"].includes(currentView)) {
-    headers.append("Content-Type", "application/json");
+    headers = {"Content-Type": "application/json"};
     body = (payload && JSON.stringify(payload)) || null;
   }
   // to send the request
@@ -78,6 +74,7 @@ export const globalHandleSubmit = async (
     method,
     headers,
     body,
+    credentials: 'include'
   });
   // if request was accepted by the server update the component
   if (fetchResponse.status === 200) {
@@ -88,36 +85,22 @@ export const globalHandleSubmit = async (
 
 // function to fetch the arrays
 export const fetchData = async (currentView) => {
-  await checkAccessTokenExpiry();
   const res = await fetch(`http://localhost:5000/${currentView}`, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem('accessToken'),
-    }
+    credentials: 'include'
   });
   return await res.json();
 };
 
-export const checkAccessTokenExpiry = async () => {
-  const expTime = localStorage.getItem('expAt');
-  const now = Math.ceil(Date.now() / 1000);
-  if (expTime > (now + 4)) return ;
-  else {
-    const refreshToken = localStorage.getItem('refreshToken');
-    const getNewToken = await fetch("http://localhost:5000/users/refresh", {
-        method: "POST",
-        body: JSON.stringify({ refreshToken }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    const res = await getNewToken?.json();
-    const newAccessToken = res?.accessToken;
-    localStorage.setItem("accessToken", newAccessToken);
-    localStorage.setItem("expAt", res?.expAt);
-  }
-}
 
 export const fetchDataUNAuth = async (currentView,user= null) => {
   const res = await fetch(`http://localhost:5000/${currentView}`);
   return await res.json();
+};
+
+export const checkAuthenticated = async () => {
+  const res = await fetch('http://localhost:5000/auth/checkAuth',{
+    method: 'POST',
+    credentials: 'include'
+  });
+  return res.status === 200 ? Cookies.getJSON('userData') : false;
 };

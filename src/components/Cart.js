@@ -2,7 +2,7 @@ import React from "react";
 import NavBarcomp from "./NavBarcomp";
 import Footercomp from "./Footercomp";
 import { PayPalButton } from "react-paypal-button-v2";
-import { fetchData, checkAccessTokenExpiry } from "./adminPanel/helpers";
+import { fetchData } from "./adminPanel/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
@@ -67,13 +67,12 @@ const Cart = () => {
         return item._id !== itemToDelete._id;
       });
     } else newCart = []
-    await checkAccessTokenExpiry();
     fetch("http://localhost:5000/users/cart", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
+      credentials: 'include',
       body: JSON.stringify(newCart),
     }).then((res) => {
       res.status === 200
@@ -207,13 +206,12 @@ const Cart = () => {
                         "Order was submitted successfully. we will deliver it ASAP!"
                       );
 
-                      await checkAccessTokenExpiry();
                       return fetch("http://localhost:5000/orders", {
                         method: "POST",
                         headers: {
                           'Content-Type': "application/json",
-                          Authorization: "Bearer " + localStorage.getItem('accessToken'),
                         },
+                        credentials: 'include',
                         body: JSON.stringify({
                           date: Date.now(),
                           customer: user._id,
