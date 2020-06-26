@@ -64,7 +64,7 @@ const Home = () => {
         <img className="img-fluid row justify-content-center m-auto" src={addsImgs[0]} />
 
         <div className="row mt-4 ml-0 mr-0 mb-4">
-          <div className="owl-title"><h3>Best Deals</h3></div>
+          <div className="owl-title"><h3>Best Products</h3></div>
           <div className="owl-carousel">
             <div className="col-12 h-100 row justify-content-center">
 
