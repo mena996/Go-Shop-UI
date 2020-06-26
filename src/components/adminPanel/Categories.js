@@ -77,12 +77,7 @@ const Categories = () => {
                 { image: image.current?.files[0], name: newData.name},
                 data,
                 setData
-              ).then(res => {
-                if (res) {
-                  setData({ ...data, toggleUpdate: !data.toggleUpdate }); 
-                  resolve();
-                } else reject();
-              })
+              ).then(res => (res) ? resolve() : reject(alert("error: All fields are required")))
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>

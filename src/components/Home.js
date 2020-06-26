@@ -14,22 +14,25 @@ const Home = () => {
     'https://placeimg.com/850/350/tech',
     'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558619165_EG_W_GW_MB_HUAWEIY9PRIME_970x400_EN.jpg',
     'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558529865_HP_MB_SamsungM10_970x400p-en.jpg'];
+  const addsImgs = ['https://cms.souqcdn.com/spring/cms/en/ae/2019_LP/kindle/egypt/eg-kindledevice-search-banner-en.png', 'https://cms.souqcdn.com/sanfronto/eg/2018/Web/Banners/HP-Strip/September/CIB-en.jpg']
   const [brands, setbrands] = useState([]);
   const [productsData, setProductsData] = React.useState({ products: [], loading: false });
   const { user } = React.useContext(UserContext);
   const user_id = user ? user._id : null;
-  const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
-
+  const [toggleUpdate, setToggleUpdate] = React.useState(false);
+  const [topcats, settopcats] = useState([]);
   React.useEffect(() => {
     setProductsData({ ...productsData, loading: true })
     fetchDataUNAuth('products/topproducts').then(res => {
       setProductsData({ ...productsData, products: res });
-      console.log(res);
-
     });
     //setting loading to false
     setProductsData({ ...productsData, loading: false })
 
+    Axios.get('http://localhost:5000/products/topcats')
+      .then((res) => {
+        settopcats(res.data);
+      })
 
     Axios.get('http://localhost:5000/brands')
       .then((res) => {
@@ -52,13 +55,13 @@ const Home = () => {
               />
               <Carousel.Caption>
                 {/* <h3>First slide label</h3>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> */}
+              <p>Nulla vitae elit libero, Link pharetra augue mollis interdum.</p> */}
               </Carousel.Caption>
             </Carousel.Item>
           )}
         </Carousel>
 
-        <img class="img-fluid row justify-content-center m-auto" src="https://cms.souqcdn.com/spring/cms/en/ae/2019_LP/kindle/egypt/eg-kindledevice-search-banner-en.png"/>
+        <img className="img-fluid row justify-content-center m-auto" src={addsImgs[0]} />
 
         <div className="row mt-4 ml-0 mr-0 mb-4">
           <div className="owl-title"><h3>Best Deals</h3></div>
@@ -70,7 +73,7 @@ const Home = () => {
 
               {productsData.products.slice(0, 7).map((product) =>
                 <div className="owl-item cloned active row ml-3" key={Math.ceil(Math.random() * 100000)}>
-                  <ProductCardComp className="products-card" product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>
+                  <ProductCardComp className="products-card" product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate} />
                 </div>
               )}
 
@@ -83,41 +86,46 @@ const Home = () => {
         </div>
 
 
-        <img class="img-fluid row justify-content-center m-auto" src="https://cms.souqcdn.com/sanfronto/eg/2018/Web/Banners/HP-Strip/September/CIB-en.jpg"/>
-       
+        <img className="img-fluid row justify-content-center m-auto" src={addsImgs[1]} />
+
         <div className="row mt-4 ml-0 mr-0 mb-4">
           <div className="owl-title"><h3>Best Categories</h3></div>
           <div className="owl-carousel">
 
 
-            <div class="row justify-content-center">
-              <div class="col-12 col-md-3 row side-img">
-                <div class="col-6 col-md-12 p-1 p-md-0 justify-content-center">
-                  <a href="#!">
-                    <img class="img-fluid" src="https://cms.souqcdn.com/sanfronto/eg/2019/Web/LPs/Laptops/Laptop-en-v2_02.jpg" />
-                  </a>
+            <div className="row justify-content-center">
+              <div className="col-12 col-md-3 row side-img">
+                <div className="col-6 col-md-12 p-1 p-md-0 justify-content-center">
+                  <Link to={topcats[1] ? `/category/${topcats[1]._id}` : ""}>
+                    <img className="img-fluid" src={topcats[1] ? topcats[1].image : ""} />
+                    <div className="centered text-dark text-truncate">{topcats[1] ? topcats[1].name : ""}</div>
+                  </Link>
                 </div>
-                <div class="col-6 col-md-12 p-1 p-md-0 justify-content-center">
-                  <a href="#!">
-                    <img class="img-fluid" src="https://cms.souqcdn.com/sanfronto/eg/2019/Web/LPs/Laptops/Laptop-en-v2_06.jpg" />
-                  </a>
+                <div className="col-6 col-md-12 p-1 p-md-0 justify-content-center">
+                  <Link to={topcats[2] ? `/category/${topcats[2]._id}` : ""}>
+                    <img className="img-fluid" src={topcats[2] ? topcats[2].image : ""} />
+                    <div className="centered text-dark text-truncate">{topcats[2] ? topcats[2].name : ""}</div>
+                  </Link>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
-                <a href="#!">
-                  <img class="img-fluid" src="https://alhasoob.smart-itbusiness.com/img/center.jpg" width="605" height="440" />
-                </a>
+              <div className="col-12 col-md-6">
+                <Link to={topcats[0] ? `/category/${topcats[0]._id}` : ""}>
+                  <img className="img-fluid" src={topcats[0] ? topcats[0].image : ""} width="605" height="440" />
+                  <div className="centered text-dark text-truncate">{topcats[0] ? topcats[0].name : ""}</div>
+                </Link>
               </div>
-              <div class="col-12 col-md-3 row side-img">
-                <div class="col-6 col-md-12 p-1 p-md-0 justify-content-center">
-                  <a href="#!">
-                    <img class="img-fluid" src="https://cms.souqcdn.com/sanfronto/eg/2019/Web/LPs/Laptops/Laptop-en-v2_07.jpg" />
-                    </a>
+              <div className="col-12 col-md-3 row side-img">
+                <div className="col-6 col-md-12 p-1 p-md-0 justify-content-center">
+                  <Link to={topcats[3] ? `/category/${topcats[3]._id}` : ""}>
+                    <img className="img-fluid" src={topcats[3] ? topcats[3].image : ""} />
+                    <div className="centered text-dark text-truncate">{topcats[3] ? topcats[3].name : ""}</div>
+                  </Link>
                 </div>
-                <div class="col-6 col-md-12 p-1 p-md-0 justify-content-center">
-                  <a href="#!">
-                    <img class="img-fluid" src="https://cms.souqcdn.com/sanfronto/eg/2019/Web/LPs/Laptops/Laptop-en-v2_04.jpg" />
-                    </a>
+                <div className="col-6 col-md-12 p-1 p-md-0 justify-content-center">
+                  <Link to={topcats[4] ? `/category/${topcats[4]._id}` : ""}>
+                    <img className="img-fluid" src={topcats[4] ? topcats[4].image : ""} />
+                    <div className="centered text-dark text-truncate">{topcats[4] ? topcats[4].name : ""}</div>
+                  </Link>
                 </div>
               </div>
             </div>
