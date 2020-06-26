@@ -1,21 +1,18 @@
 import React from "react";
 import NavBarcomp from "./NavBarcomp";
 import Footercomp from "./Footercomp";
-import { PayPalButton } from "react-paypal-button-v2";
 import { fetchData } from "./adminPanel/helpers";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Grid from "@material-ui/core/Grid";
-import { UserContext } from "../App";
-import { Paper, Button } from "@material-ui/core";
+import { Paper, Button, Select, MenuItem } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
 
 const Cart = () => {
   const [cartData, setCartData] = React.useState({ items: [], loading: false });
   const [totalAmount, setTotalAmount] = React.useState(0);
-  const { user } = React.useContext(UserContext);
 
   const classes = useStyles();
 
@@ -42,13 +39,28 @@ const Cart = () => {
     );
   };
 
-  const changeQuantity = (e) => {
+  const formatCartArrayToSend = (array) => {
+    return array.map((item) => {
+      return {
+        price: item.price,
+        product: item.product._id,
+        quantity: item.quantity,
+      };
+    });
+  };
+  const changeQuantity = async (e) => {
     if (e.target.value) {
       let newItems = [...cartData.items];
       newItems.forEach((item) => {
-        if (item._id === e.target.id) item.quantity = e.target.value;
+        if (item._id === e.target.name) item.quantity = e.target.value;
       });
       setCartData({ ...cartData, items: newItems });
+      await fetch("http://localhost:5000/users/cart", {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formatCartArrayToSend(newItems)),
+      });
     }
   };
 
@@ -62,23 +74,23 @@ const Cart = () => {
       };
     });
     let newCart;
-    if (itemToDelete) {
-      newCart = cart.filter((item) => {
-        return item._id !== itemToDelete._id;
-      });
-    } else newCart = []
+    newCart = cart.filter((item) => {
+      return item._id !== itemToDelete._id;
+    });
     fetch("http://localhost:5000/users/cart", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(newCart),
     }).then((res) => {
       res.status === 200
         ? res
-          .json()
-          .then((res) => setCartData({ ...cartData, items: res.cart }))
+            .json()
+            .then((response) =>
+              setCartData({ ...cartData, items: response.cart })
+            )
         : alert("Couldn't add product to cart");
     });
   };
@@ -90,7 +102,7 @@ const Cart = () => {
         <div className="col-sm-6 text-center mx-auto p-3">
           <Paper className="p-3">
             <Typography variant="h4" gutterBottom>
-              Order summary
+              Cart
             </Typography>
             <List disablePadding>
               {cartData.items.length === 0 && <h5>Cart is empty</h5>}
@@ -108,15 +120,19 @@ const Cart = () => {
                     primary={item.product.name}
                     secondary={item.product.description}
                   />
-                  <input
-                    type="number"
+                  <Select
                     className="mr-2"
-                    defaultValue={item.quantity}
+                    value={item.quantity}
                     style={{ width: "70px" }}
-                    min="0"
-                    id={item._id}
                     onChange={changeQuantity}
-                  />
+                    name={item._id}
+                  >
+                    {Array.from(Array(10), (_, i) => i + 1).map((q) => (
+                      <MenuItem value={q} key={q}>
+                        {q}
+                      </MenuItem>
+                    ))}
+                  </Select>
                   <Typography variant="body2">$ {item.price}</Typography>
                 </ListItem>
               ))}
@@ -127,7 +143,7 @@ const Cart = () => {
                   component={"h4"}
                   className={classes.total}
                 >
-                  $ {totalAmount * 0.14}
+                  $ {(totalAmount * 0.14).toFixed(2)}
                 </Typography>
               </ListItem>
               <ListItem className={classes.listItem}>
@@ -137,99 +153,11 @@ const Cart = () => {
                   component={"h3"}
                   className={classes.total}
                 >
-                  $ {totalAmount * 1.14}
+                  $ {(totalAmount * 1.14).toFixed(2)}
                 </Typography>
               </ListItem>
             </List>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="h6" gutterBottom className={classes.title}>
-                  Shipping Info
-                </Typography>
-                <Typography gutterBottom>
-                  Name: {user.firstName} {user.lastName}
-                </Typography>
-                <Typography gutterBottom>Address: {user.address}</Typography>
-              </Grid>
-              <Grid item container direction="column" xs={12} sm={6}>
-                <PayPalButton
-                  options={{
-                    clientId:
-                      "AeyTfMtFsS6QiwdD7ojlsggsl2N7c7sGplvHS0HXfbpYzpEYahh2mKnf17OcEaB9Vnycb2uFJuiY9VHr",
-                  }}
-                  debug
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            currency_code: "USD",
-                            value: totalAmount * 1.14,
-                            breakdown: {
-                              item_total: {
-                                currency_code: "USD",
-                                value: totalAmount,
-                              },
-                              tax_total: {
-                                currency_code: "USD",
-                                value: totalAmount * 0.14
-                              }
-                            },
-                          },
-                          items: cartData.items?.map((item) => {
-                            return {
-                              name: item.product.name,
-                              unit_amount: {
-                                currency_code: "USD",
-                                value: item.price,
-                              },
-                              quantity: item.quantity,
-                              description: item.product.description,
-                              tax: {
-                                currency_code: "USD",
-                                value: item.price * 0.14
-                              }
-                            };
-                          }),
-                          shipping: {
-                            name: {
-                              full_name: user.firstName + " " + user.lastName,
-                            },
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    return actions.order.capture().then(async (details) => {
-                      alert(
-                        "Order was submitted successfully. we will deliver it ASAP!"
-                      );
-
-                      return fetch("http://localhost:5000/orders", {
-                        method: "POST",
-                        headers: {
-                          'Content-Type': "application/json",
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify({
-                          date: Date.now(),
-                          customer: user._id,
-                          products: cartData.items.map((item) => {
-                            return {
-                              product: item.product._id,
-                              price: item.price,
-                              quantity: item.quantity,
-                              status: 0,
-                            };
-                          }),
-                        }),
-                      }).then((res) => removeItem(null));
-                    });
-                  }}
-                />
-              </Grid>
-            </Grid>
+            <NavLink to="/checkout">Proceed to checkout</NavLink>
           </Paper>
         </div>
       </div>

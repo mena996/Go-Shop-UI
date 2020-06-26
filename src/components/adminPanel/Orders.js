@@ -36,10 +36,21 @@ export default function Orders() {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell><strong>Date</strong></TableCell>
-              <TableCell align="left"><strong>Customer</strong></TableCell>
-              <TableCell align="left"><strong>Status</strong></TableCell>
-              <TableCell align="left"><strong>Actions</strong></TableCell>
+              <TableCell>
+                <strong>Date</strong>
+              </TableCell>
+              <TableCell align="left">
+                <strong>Customer</strong>
+              </TableCell>
+              <TableCell align="left">
+                <strong>Shipping Status</strong>
+              </TableCell>
+              <TableCell align="left">
+                <strong>Payment Status</strong>
+              </TableCell>
+              <TableCell align="left">
+                <strong>Actions</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -60,8 +71,11 @@ function Row(props) {
   // user, loading data
   const { data, setData } = React.useContext(DataContext);
 
-  const generateStatus = (code) => {
+  const generateShippingStatus = (code) => {
     return code === 0 ? "🟡 Pending" : "🟢 Delivered";
+  };
+  const generatePaymentStatus = (status) => {
+    return status ? "🟢 Paid" : " 🔴 Cash on delivery";
   };
 
   const generateDeliveryButton = (order) => {
@@ -87,12 +101,14 @@ function Row(props) {
   }
 
   function subtotal(row) {
-    return row.products.map(({ price, quantity }) => price * quantity).reduce((sum, i) => sum + i, 0);
+    return row.products
+      .map(({ price, quantity }) => price * quantity)
+      .reduce((sum, i) => sum + i, 0);
   }
 
   const invoiceSubtotal = subtotal(row);
-const invoiceTaxes = 0.14 * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+  const invoiceTaxes = 0.14 * invoiceSubtotal;
+  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
   return (
     <React.Fragment>
@@ -110,7 +126,8 @@ const invoiceTotal = invoiceTaxes + invoiceSubtotal;
           {row.date.substring(0, 10)}
         </TableCell>
         <TableCell align="left">{row.customer.username}</TableCell>
-        <TableCell align="left">{generateStatus(row.status)}</TableCell>
+        <TableCell align="left">{generateShippingStatus(row.status)}</TableCell>
+        <TableCell align="left">{generatePaymentStatus(row.paid)}</TableCell>
         <TableCell align="left">{generateDeliveryButton(row)}</TableCell>
       </TableRow>
       <TableRow>
@@ -123,10 +140,18 @@ const invoiceTotal = invoiceTaxes + invoiceSubtotal;
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell><strong>Product</strong></TableCell>
-                    <TableCell><strong>Price</strong></TableCell>
-                    <TableCell align="left"><strong>Amount</strong></TableCell>
-                    <TableCell align="left"><strong>Total price ($)</strong></TableCell>
+                    <TableCell>
+                      <strong>Product</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Price</strong>
+                    </TableCell>
+                    <TableCell align="left">
+                      <strong>Amount</strong>
+                    </TableCell>
+                    <TableCell align="left">
+                      <strong>Total price ($)</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -144,19 +169,33 @@ const invoiceTotal = invoiceTaxes + invoiceSubtotal;
                     </TableRow>
                   ))}
                   <TableRow>
-            <TableCell rowSpan={3} />
-            <TableCell colSpan={2}><strong>Subtotal</strong></TableCell>
-            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell><strong>Tax</strong></TableCell>
-            <TableCell align="right">{`${(0.14 * 100).toFixed(0)} %`}</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={2}><strong>Total</strong></TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
-          </TableRow>
+                    <TableCell rowSpan={3} />
+                    <TableCell colSpan={2}>
+                      <strong>Subtotal</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      {ccyFormat(invoiceSubtotal)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <strong>Tax</strong>
+                    </TableCell>
+                    <TableCell align="right">{`${(0.14 * 100).toFixed(
+                      0
+                    )} %`}</TableCell>
+                    <TableCell align="right">
+                      {ccyFormat(invoiceTaxes)}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2}>
+                      <strong>Total</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      {ccyFormat(invoiceTotal)}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -166,26 +205,28 @@ const invoiceTotal = invoiceTaxes + invoiceSubtotal;
               </Typography>
               <Table size="small" aria-label="customer">
                 <TableBody>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <strong>Full Name:</strong>
-                      </TableCell>
-                      <TableCell>{row.customer.firstName} {row.customer.lastName}</TableCell>
-                      <TableCell component="th" scope="row">
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <strong>Full Name:</strong>
+                    </TableCell>
+                    <TableCell>
+                      {row.customer.firstName} {row.customer.lastName}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
                       <strong>Email:</strong>
-                      </TableCell>
-                      <TableCell>{row.customer.email}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
+                    </TableCell>
+                    <TableCell>{row.customer.email}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
                       <strong>Address:</strong>
-                      </TableCell>
-                      <TableCell>{row.customer.address}</TableCell>
-                      <TableCell component="th" scope="row">
+                    </TableCell>
+                    <TableCell>{row.customer.address}</TableCell>
+                    <TableCell component="th" scope="row">
                       <strong>Phone:</strong>
-                      </TableCell>
-                      <TableCell>{row.customer.phone}</TableCell>
-                    </TableRow>
+                    </TableCell>
+                    <TableCell>{row.customer.phone}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
