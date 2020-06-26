@@ -32,7 +32,7 @@ const Sidebar = (props) => {
   const navClases = navLinksStyles();
   // logout function
   const logout = () => {
-    fetch('http://localhost:5000/auth/logout', {method: 'POST'}).then( res => {
+    fetch('http://localhost:5000/auth/logout', {method: 'POST', credentials: 'include'}).then( res => {
     setUser();
     })
    }

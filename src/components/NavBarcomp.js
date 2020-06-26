@@ -14,7 +14,7 @@ const NavBarcomp = () => {
   const user_id = user ? user._id : null;
 
   const logout = () => {
-    fetch('http://localhost:5000/auth/logout', { method: 'POST'}).then(res => {
+    fetch('http://localhost:5000/auth/logout', { method: 'POST', credentials: 'include'}).then(res => {
       setUser();
     })
   }
