@@ -11,6 +11,7 @@ import Brands from "./components/Brands";
 import CategoryProduct from "./components/CategoryProduct";
 import BrandProduct from "./components/BrandProduct";
 import Favorite from "./components/Favorite";
+import Verify from "./components/Verify";
 
 export const UserContext = React.createContext(null);
 export const SearchContext = React.createContext(null);
@@ -30,7 +31,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/cart" component={Cart} />
           <Route path="/favorite" component={Favorite} />
-          {/* <Route path="/admin" component={Admin} /> */}
+          <Route path="/verify/:id" component={Verify} />
           <Route path="/category/:id" component={CategoryProduct} />
           <Route path="/categories" component={Categories} />
           <Route path="/products" component={Products} />
