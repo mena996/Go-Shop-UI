@@ -12,13 +12,12 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
       price: product.price,
       quantity: 1
     }
-    await checkAccessTokenExpiry();
     fetch('http://localhost:5000/users/cart', {
       method: 'POST',
       headers: {
         'Content-Type': "application/json",
-        Authorization: "Bearer " + localStorage.getItem('accessToken'),
       },
+      credentials: 'include',
       body: JSON.stringify(cartItem)
     }).then(res => {
       if (res.status === 200) {

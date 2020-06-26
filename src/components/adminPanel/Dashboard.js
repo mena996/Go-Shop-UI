@@ -12,6 +12,7 @@ import Categories from "./Categories";
 import Orders from "./Orders";
 import Users from "./Users";
 import Statistics from "./Statistics";
+import AdminUsers from "./AdminUsers";
 
 const Dashboard = (props) => {
     const { data } = React.useContext(DataContext);
@@ -30,6 +31,8 @@ const Dashboard = (props) => {
                 return <Orders />
             case 'users':
                 return <Users />
+            case 'admins':
+                return <AdminUsers />
           default:
               break;
       }

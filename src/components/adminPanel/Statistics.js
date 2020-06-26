@@ -18,7 +18,7 @@ export default function Statistics() {
   const [stats, setStats] = React.useState({});
   React.useEffect(() => {
     // fetching stats
-    fetchData("statistics", data?.user).then((res) => setStats(res));
+    fetchData("statistics").then((res) => setStats(res));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.user]);
 
