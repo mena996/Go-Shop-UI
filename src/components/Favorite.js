@@ -14,7 +14,7 @@ const Favorite = () => {
     //user state
     const { user } = React.useContext(UserContext);
     const user_id = user ? user._id : null;
-    const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
+    const [toggleUpdate, setToggleUpdate] = React.useState(false);
     const [cats, setcats] = useState([]);
     const [brands, setbrands] = useState([]);
     const [searchfilter, setSearchfilter] = useState([]);
@@ -25,7 +25,7 @@ const Favorite = () => {
         setProductsData({ ...productsData, loading: true })
         fetchData('users/favorite').then(res => {
             setProductsData({ ...productsData, products: res });
-            setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.product.name.includes(search))) });
+            if (res.product) { setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.product.name.includes(search))) }); }
         });
         //setting loading to false
         setProductsData({ ...productsData, loading: false })
@@ -40,10 +40,10 @@ const Favorite = () => {
             })
     }, [productsData.loading]);
 
-    if (search != searchfilter ) {
+    if (search != searchfilter) {
         setSearchfilter(search);
         filter();
-        
+
     }
 
 
@@ -90,14 +90,14 @@ const Favorite = () => {
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
-                                    {brands.map((brand) =>
-                                        <label className="form-check" key={"b"+brand._id}>
-                                            <input className="form-check-input" type="checkbox" value={brand._id} onClick={filterBrand} />
-                                            <span className="form-check-label">
-                                                {brand.name}
-                                            </span>
-                                        </label>
-                                    )}
+                                {brands.map((brand) =>
+                                    <label className="form-check" key={"b" + brand._id}>
+                                        <input className="form-check-input" type="checkbox" value={brand._id} onClick={filterBrand} />
+                                        <span className="form-check-label">
+                                            {brand.name}
+                                        </span>
+                                    </label>
+                                )}
                             </div>
                         </div>
                     </article>
@@ -107,21 +107,21 @@ const Favorite = () => {
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
-                                    {cats.map((cat) =>
-                                        <label className="form-check" key={"c"+cat._id} >
-                                            <input className="form-check-input" type="checkbox" value={cat._id} onClick={filterCat} />
-                                            <span className="form-check-label">
-                                                {cat.name}
-                                            </span>
-                                        </label>
-                                    )}
+                                {cats.map((cat) =>
+                                    <label className="form-check" key={"c" + cat._id} >
+                                        <input className="form-check-input" type="checkbox" value={cat._id} onClick={filterCat} />
+                                        <span className="form-check-label">
+                                            {cat.name}
+                                        </span>
+                                    </label>
+                                )}
                             </div>
                         </div>
                     </article>
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
                     <div className="container col-12 row justify-content-center">
-                        {productsDataFiltered.products.map((product, index) => <ProductCardComp key={Math.ceil(Math.random() * 100000)} product={product.product} userid={user_id}  toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate}/>)}
+                        {productsDataFiltered.products.map((product, index) => <ProductCardComp key={Math.ceil(Math.random() * 100000)} product={product.product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate} />)}
                     </div>
                 </div>
             </div>
