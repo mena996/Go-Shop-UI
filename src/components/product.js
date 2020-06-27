@@ -155,6 +155,7 @@ const Product = ({ match: { params: { id } } }) => {
                 <NavBarcomp />
                 <div className="main">
                     <div className="container">
+                        { product.product.available && ( <>
                         <Popup
                             open={open}
                             modal
@@ -241,7 +242,8 @@ const Product = ({ match: { params: { id } } }) => {
                                 <Reviews reviews={reviews} submitHandler={submitHandler} deleteHandler={deleteHandler} user={user_id} />
                             </div>
                         </div>
-
+                        </>)}
+                        {!product.product.available && <h3 className='p-5 m-5'>Product isn't available</h3>}
                     </div>
                 </div>
                 <FooterPage />

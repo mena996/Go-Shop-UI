@@ -7,6 +7,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Switch,
 } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
@@ -24,7 +25,6 @@ const Products = () => {
     categories: [],
     brands: [],
   });
-
   const getBookOptions = async () => {
     await Promise.all([
       fetch("http://localhost:5000/categories").then((categories) =>
@@ -45,12 +45,14 @@ const Products = () => {
     getBookOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.loading, data.toggleUpdate]);
+
   const handleInputChange = (e) => {
     const {
       target: { name, value },
     } = e;
-    product[name] =  value;
+    product[name] = value;
   };
+
   return (
     <MaterialTable
       icons={Icons}
@@ -133,7 +135,9 @@ const Products = () => {
                 name="brand"
                 onChange={handleInputChange}
                 inputProps={{ "aria-label": "Without label" }}
-                defaultValue={product?.brand || tableData?.rowData?.brand?._id || ""}
+                defaultValue={
+                  product?.brand || tableData?.rowData?.brand?._id || ""
+                }
               >
                 <MenuItem value="" disabled>
                   <em>Choose brand</em>
@@ -144,6 +148,29 @@ const Products = () => {
               </Select>
             </FormControl>
           ),
+        },
+        {
+          title: "Available",
+          field: "available",
+          editComponent: (tableData) => (
+            <FormControl required>
+              <Switch
+                name="available"
+                defaultChecked={tableData.rowData.available}
+                onChange={() =>
+                  (product.available =
+                    product.available !== undefined
+                      ? !product.available
+                      : !tableData.rowData.available)
+                }
+                color="primary"
+              />
+            </FormControl>
+          ),
+          render: (rowData) => (
+            <Switch checked={rowData?.available} color="primary" />
+          ),
+          editable: "onUpdate",
         },
       ]}
       editable={{
@@ -163,7 +190,15 @@ const Products = () => {
                 },
                 data,
                 setData
-              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required and price must be a number"))));
+              ).then((res) =>
+                res
+                  ? resolve()
+                  : reject(
+                      alert(
+                        "error: All fields are required and price must be a number"
+                      )
+                    )
+              );
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
@@ -179,10 +214,19 @@ const Products = () => {
                   price: newData.price,
                   category: product?.category,
                   brand: product?.brand,
+                  available: product?.available,
                 },
                 data,
                 setData
-              ).then((res) => (res ? resolve() : reject(alert("error: All fields are required and price must be a number"))));
+              ).then((res) =>
+                res
+                  ? resolve()
+                  : reject(
+                      alert(
+                        "error: All fields are required and price must be a number"
+                      )
+                    )
+              );
             }, 100);
           }),
         onRowDelete: (oldData) =>
@@ -198,10 +242,12 @@ const Products = () => {
               ).then((res) => (res ? resolve() : reject()));
             }, 100);
           }),
+        onRowAddCancelled: () => product = {},
+        onRowUpdateCancelled: () => product = {},
       }}
       data={products}
       options={{
-        paging: false
+        paging: false,
       }}
     />
   );

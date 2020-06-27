@@ -11,11 +11,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { UserContext } from "../App";
 import { Paper, Button } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
 
 const Checkout = () => {
   const [cartData, setCartData] = React.useState({ items: [], loading: false });
   const [totalAmount, setTotalAmount] = React.useState(0);
   const { user } = React.useContext(UserContext);
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -67,6 +69,7 @@ const Checkout = () => {
       .then(() => {
         setCartData({ ...cartData, items: [] });
         alert("Order was submitted successfully. we will deliver it ASAP!");
+        history.push('/')
       });
   };
 
@@ -208,7 +211,10 @@ const Checkout = () => {
                       }),
                     })
                       .then(() => emptyCart())
-                      .then(() => setCartData({ ...cartData, items: [] }));
+                      .then(() => {
+                        setCartData({ ...cartData, items: [] });
+                        history.push('/');
+                      });
                   });
                 }}
               />
