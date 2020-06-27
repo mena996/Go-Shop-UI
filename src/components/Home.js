@@ -14,7 +14,7 @@ const Home = () => {
   //   'https://placeimg.com/850/350/tech',
   //   'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558619165_EG_W_GW_MB_HUAWEIY9PRIME_970x400_EN.jpg',
   //   'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558529865_HP_MB_SamsungM10_970x400p-en.jpg'];
-  const addsImgs = ['https://cms.souqcdn.com/spring/cms/en/ae/2019_LP/kindle/egypt/eg-kindledevice-search-banner-en.png', 'https://cms.souqcdn.com/sanfronto/eg/2018/Web/Banners/HP-Strip/September/CIB-en.jpg']
+  // const addsImgs = ['https://cms.souqcdn.com/spring/cms/en/ae/2019_LP/kindle/egypt/eg-kindledevice-search-banner-en.png', 'https://cms.souqcdn.com/sanfronto/eg/2018/Web/Banners/HP-Strip/September/CIB-en.jpg']
   const [ads, setAds] = useState([]);
   const [brands, setbrands] = useState([]);
   const [productsData, setProductsData] = React.useState({ products: [], loading: false });
@@ -51,9 +51,9 @@ const Home = () => {
 
       <div className="container col-12 pt-0 pl-5 pr-5">
         <Carousel className="ml-sm-0 mr-xm-0 mt-xm-5 mb-sm-5  m-lg-5">
-          {ads.map((ad) =>
+          {ads.slice(2).map((ad) =>
             <Carousel.Item key={Math.ceil(Math.random() * 100000)}>
-              <Link to={`/products/${ad.product._id}`} >
+              <Link to={`/product/${ad.product._id}`} >
               <img
                 className="d-block w-100"
                 src={ad.image}
@@ -69,7 +69,7 @@ const Home = () => {
           )}
         </Carousel>
 
-        <img className="img-fluid row justify-content-center m-auto" src={addsImgs[0]} />
+        <img className="row justify-content-center m-auto" src={ads[0]?ads[0].image:""} alt={ads[0]?ads[0].alt:""} height="200px"  width="100%"/>
 
         <div className="row mt-4 ml-0 mr-0 mb-4">
           <div className="owl-title"><h3>Best Products</h3></div>
@@ -94,7 +94,7 @@ const Home = () => {
         </div>
 
 
-        <img className="img-fluid row justify-content-center m-auto" src={addsImgs[1]} />
+        <img className="row justify-content-center m-auto" src={ads[1]?ads[1].image:""} alt={ads[1]?ads[1].alt:""} height="200px"  width="100%"/>
 
         <div className="row mt-4 ml-0 mr-0 mb-4">
           <div className="owl-title"><h3>Best Categories</h3></div>
