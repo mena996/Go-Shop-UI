@@ -10,11 +10,12 @@ const NavBarcomp = () => {
   const { search, setSearch } = React.useContext(SearchContext);
   const { user, setUser } = React.useContext(UserContext);
   const [preSearch, setPreSearch] = useState([]);
-  const [ cartItemsCount, setCartItemsCount ] = React.useState(0);
+  const [cartItemsCount, setCartItemsCount] = React.useState(0);
   const user_id = user ? user._id : null;
 
+
   const logout = () => {
-    fetch('http://localhost:5000/auth/logout', { method: 'POST', credentials: 'include'}).then(res => {
+    fetch('http://localhost:5000/auth/logout', { method: 'POST', credentials: 'include' }).then(res => {
       setUser();
     })
   }
@@ -24,7 +25,7 @@ const NavBarcomp = () => {
   React.useEffect(() => {
     setPreSearch(search);
   }, []);
-   fetchData('users/cart').then(res => setCartItemsCount( res.cart.length ));
+  fetchData('users/cart').then(res => setCartItemsCount(res.cart.length));
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark col-12 sticky-top">
@@ -58,8 +59,8 @@ const NavBarcomp = () => {
                 <h3>
                   <Link to="/cart" className="nav-link text-light text-truncate">
                     <i className="fa fa-shopping-cart"></i>
-                {cartItemsCount}
-              </Link>
+                    {cartItemsCount}
+                  </Link>
                 </h3>
               </li> : <></>
             }

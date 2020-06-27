@@ -25,7 +25,7 @@ const Favorite = () => {
         setProductsData({ ...productsData, loading: true })
         fetchData('users/favorite').then(res => {
             setProductsData({ ...productsData, products: res });
-            if (res.product) { setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.product.name.includes(search))) }); }
+            setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.product.name.includes(search))) });
         });
         //setting loading to false
         setProductsData({ ...productsData, loading: false })
