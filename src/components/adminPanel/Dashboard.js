@@ -13,6 +13,7 @@ import Orders from "./Orders";
 import Users from "./Users";
 import Statistics from "./Statistics";
 import AdminUsers from "./AdminUsers";
+import Advertisements from "./Advertisements";
 
 const Dashboard = (props) => {
     const { data } = React.useContext(DataContext);
@@ -33,6 +34,8 @@ const Dashboard = (props) => {
                 return <Users />
             case 'admins':
                 return <AdminUsers />
+            case 'ads':
+                return <Advertisements />
           default:
               break;
       }

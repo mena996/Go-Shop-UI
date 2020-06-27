@@ -15,12 +15,12 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from "@material-ui/icons/People";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import CategoryIcon from "@material-ui/icons/Category";
-import SettingsIcon from "@material-ui/icons/Settings";
+import TimelineIcon from '@material-ui/icons/Timeline';
 import ShopIcon from "@material-ui/icons/Shop";
 import InputIcon from "@material-ui/icons/Input";
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { UserContext } from "../../../App";
 
 const Sidebar = (props) => {
@@ -50,7 +50,7 @@ const Sidebar = (props) => {
     {
       title: "Admins",
       component: "admins",
-      icon: <SupervisorAccountIcon />,
+      icon: <VerifiedUserIcon />,
     },
     {
       title: "Brands",
@@ -73,9 +73,9 @@ const Sidebar = (props) => {
       icon: <ReceiptIcon />,
     },
     {
-      title: "Settings",
-      component: "settings",
-      icon: <SettingsIcon />,
+      title: "Advertisements",
+      component: "ads",
+      icon: <TimelineIcon />,
     },
   ];
 

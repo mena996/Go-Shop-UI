@@ -10,11 +10,12 @@ import ProductCardComp from "./ProductCardComp";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const mainImages = ['https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558612074_EG_W_EIDMubarak_MB_TVS_EN.jpg',
-    'https://placeimg.com/850/350/tech',
-    'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558619165_EG_W_GW_MB_HUAWEIY9PRIME_970x400_EN.jpg',
-    'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558529865_HP_MB_SamsungM10_970x400p-en.jpg'];
+  // const mainImages = ['https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558612074_EG_W_EIDMubarak_MB_TVS_EN.jpg',
+  //   'https://placeimg.com/850/350/tech',
+  //   'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558619165_EG_W_GW_MB_HUAWEIY9PRIME_970x400_EN.jpg',
+  //   'https://cms.souqcdn.com/cms/boxes/img/desktop/L_1558529865_HP_MB_SamsungM10_970x400p-en.jpg'];
   const addsImgs = ['https://cms.souqcdn.com/spring/cms/en/ae/2019_LP/kindle/egypt/eg-kindledevice-search-banner-en.png', 'https://cms.souqcdn.com/sanfronto/eg/2018/Web/Banners/HP-Strip/September/CIB-en.jpg']
+  const [ads, setAds] = useState([]);
   const [brands, setbrands] = useState([]);
   const [productsData, setProductsData] = React.useState({ products: [], loading: false });
   const { user } = React.useContext(UserContext);
@@ -28,6 +29,11 @@ const Home = () => {
     });
     //setting loading to false
     setProductsData({ ...productsData, loading: false })
+
+    Axios.get('http://localhost:5000/ads')
+      .then((res) => {
+        setAds(res.data);
+      })
 
     Axios.get('http://localhost:5000/products/topcats')
       .then((res) => {
@@ -45,14 +51,16 @@ const Home = () => {
 
       <div className="container col-12 pt-0 pl-5 pr-5">
         <Carousel className="ml-sm-0 mr-xm-0 mt-xm-5 mb-sm-5  m-lg-5">
-          {mainImages.map((img) =>
+          {ads.map((ad) =>
             <Carousel.Item key={Math.ceil(Math.random() * 100000)}>
+              <Link to={`/products/${ad.product._id}`} >
               <img
                 className="d-block w-100"
-                src={img}
-                alt="First slide"
+                src={ad.image}
+                alt={ad.alt}
                 height="400"
               />
+              </Link>
               <Carousel.Caption>
                 {/* <h3>First slide label</h3>
               <p>Nulla vitae elit libero, Link pharetra augue mollis interdum.</p> */}
