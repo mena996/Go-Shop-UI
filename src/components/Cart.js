@@ -91,7 +91,7 @@ const Cart = () => {
             .then((response) =>
               setCartData({ ...cartData, items: response.cart })
             )
-        : alert("Couldn't add product to cart");
+        : alert("Couldn't remove product from cart");
     });
   };
 
