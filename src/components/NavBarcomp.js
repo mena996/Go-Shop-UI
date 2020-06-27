@@ -48,6 +48,9 @@ const NavBarcomp = () => {
             <li className="nav-item">
               <Link className="nav-link text-light" to="/categories">Categories</Link>
             </li>
+            {user && <li className="nav-item">
+              <Link className="nav-link text-light" to="/orders">Orders</Link>
+            </li>}
           </ul>
           <ul className="navbar-nav ml-auto nav-flex-icons">
             <div className="form-inline my-2 my-lg-0">

@@ -28,7 +28,7 @@ const Dashboard = (props) => {
             case 'brands':
                 return <Brands />
             case 'orders':
-                return <Orders />
+                return <Orders isAdmin={true}/>
             case 'users':
                 return <Users />
             case 'admins':
