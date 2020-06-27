@@ -8,9 +8,32 @@ import Ratecomp from './Ratecomp';
 import ProductRate from './RateResults';
 import FooterPage from './Footercomp';
 import NavBarcomp from './NavBarcomp';
+import Favoritecomp from './Favoritecomp';
+import { Button } from '@material-ui/core';
 
 
 const Product = ({ match: { params: { id } } }) => {
+    const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
+    const addToCart = async () => {
+        const cartItem = {
+            product: product._id,
+            price: product.price,
+            quantity: 1
+        }
+        fetch('http://localhost:5000/users/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json",
+            },
+            credentials: 'include',
+            body: JSON.stringify(cartItem)
+        }).then(res => {
+            if (res.status === 200) {
+                setToggleUpdate(!toggleUpdate);
+                alert('Product was added successfully');
+            } else alert("Couldn't add product to cart");
+        })
+    }
     const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
     const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
     const { user } = React.useContext(UserContext);
@@ -151,31 +174,42 @@ const Product = ({ match: { params: { id } } }) => {
                                 </div>
                             </>
                         </Popup>
-                        {/* Author section */}
-                        <div className="row mt-4">
-                            <div className="col-3">
-                                <div className="card" style={{ width: "100%", height: "265px" }}>
-                                    <img className="card-img-top" src={product.product.image} alt="Product" />
-                                </div>
-                                <div>
-                                    <Ratecomp productid={id} userid={user_id} />
-                                </div>
-                            </div>
-                            <div className="col-9">
+                        <div>
+                            <div className="col-12 mt-3">
                                 <div className="card">
-                                    <div className="card-body">
-                                        <h4 className="card-title">{product.product.name}</h4>
-                                        <hr />
-                                        <div className="card-text">
-                                            {/* <strong>By : </strong> &nbsp;<Link to={`/author/${product.product.author._id}`}>{product.product.author.firstName}&nbsp;{product.product.author.lastName}</Link> */}
-                                            <br />
-                                            <strong>Category : </strong> &nbsp;<Link to={`/category/${product.product.category._id}`}>{product.product.category.name}</Link>
-                                            <br />
-                                            <ProductRate id={id} />
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4">
+                                            <img className="card-img-top p-2" src={product.product.image} style={{ height: "100%" }} alt="Product" />
                                         </div>
-                                        <p className="card-text">
-                                            {product.product.description}
-                                        </p>
+
+                                        <div className="card-body">
+                                            <div className="row container">
+                                                <h4 className="card-title col-10">{product.product.name}</h4>
+                                                {/* <div className="col-xl-4 col-md-5 col-sm-12">
+                                                    <Ratecomp productid={id} userid={user_id} />
+                                                </div> */}
+                                                <div className="col-1">
+                                                    <Favoritecomp productid={product.product._id} userid={user_id} />
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div className="card-text">
+                                                {/* <strong>By : </strong> &nbsp;<Link to={`/author/${product.product.author._id}`}>{product.product.author.firstName}&nbsp;{product.product.author.lastName}</Link> */}
+                                                <strong>Price : </strong> &nbsp;{product.product.price}
+                                                <br />
+                                                <strong>Category : </strong> &nbsp;<Link to={`/category/${product.product.category._id}`}>{product.product.category.name}</Link>
+                                                <br />
+                                                <strong>Brand : </strong> &nbsp;<Link to={`/brand/${product.product.brand._id}`}>{product.product.brand.name}</Link>
+                                                <br />
+                                                <ProductRate id={id} />
+                                                <div className="float-right">
+                                                    <Button onClick={() => addToCart()} color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger mt-0"><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
+                                                </div>
+                                            </div>
+                                            <p className="card-text">
+                                                {product.product.description}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -184,14 +218,24 @@ const Product = ({ match: { params: { id } } }) => {
                         {/* reviews section */}
                         {/* review form */}
                         <div className="card  mt-5">
-                            <div className="card-header">Add your review review</div>
+                            <div className="card-header">
+                                <div className="row">
+                                    <div className="ml-3">
+                                        Add your review review
+                                    </div>
+                                    <div className="col-xl-4 col-md-5 col-sm-12">
+                                        <Ratecomp productid={id} userid={user_id} />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="card-body">
                                 <ReviewForm submitHandler={submitHandler} review="" mode="add" id="" />
                             </div>
                         </div>
 
                         {/* reviews */}
-                        <div className="card  mt-5">
+                        <div className="card  mt-5 mb-5">
                             <div className="card-header">Product's reviews</div>
                             <div className="card-body">
                                 <Reviews reviews={reviews} submitHandler={submitHandler} deleteHandler={deleteHandler} user={user_id} />
@@ -200,7 +244,7 @@ const Product = ({ match: { params: { id } } }) => {
 
                     </div>
                 </div>
-                <FooterPage/>
+                <FooterPage />
             </div>
         );
     }
