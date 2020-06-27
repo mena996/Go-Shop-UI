@@ -139,7 +139,7 @@ const Advertisements = () => {
                 {
                   image: image.current?.files[0],
                   alt: newData.alt,
-                  product: product,
+                  product: product === '' ? newData.product : product ,
                 },
                 data,
                 setData
