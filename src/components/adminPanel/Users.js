@@ -2,7 +2,6 @@ import React from "react";
 import MaterialTable from "material-table";
 import { Icons, fetchData, globalHandleSubmit } from "./helpers";
 import { DataContext } from "./Admin";
-import { Button } from "@material-ui/core";
 
 const Users = () => {
   //users array

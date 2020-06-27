@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Cookies from 'js-cookie';
 import Admin from "./components/adminPanel/Admin";
 import Home from './components/Home';
 import Cart from './components/Cart';
@@ -14,6 +13,7 @@ import BrandProduct from "./components/BrandProduct";
 import Favorite from "./components/Favorite";
 import { checkAuthenticated } from "./components/adminPanel/helpers";
 import Verify from "./components/Verify";
+import Checkout from "./components/Checkout";
 
 export const UserContext = React.createContext(null);
 export const SearchContext = React.createContext(null);
@@ -36,6 +36,7 @@ function App() {
           <Route path="/admin" component={Admin} />
           <Route exact path="/" component={Home} />
           <Route path="/cart" component={Cart} />
+          <Route path="/checkout" component={Checkout} />
           <Route path="/favorite" component={Favorite} />
           <Route path="/verify/:id" component={Verify} />
           <Route path="/category/:id" component={CategoryProduct} />
