@@ -13,7 +13,31 @@ import { Button } from '@material-ui/core';
 
 
 const Product = ({ match: { params: { id } } }) => {
-    const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
+    const [toggleUpdate, setToggleUpdate] = React.useState(false);
+    const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
+    const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
+    const { user } = React.useContext(UserContext);
+    const user_id = user ? user._id : null
+    const [open, setOpen] = useState(false)
+    
+    const addToWishlist = async () => {
+        console.log(product);
+        
+        fetch('http://localhost:5000/users/wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json",
+            },
+            credentials: 'include',
+            body: JSON.stringify({ product: product.product._id })
+        }).then(res => {
+            if (res.status === 200) {
+                setToggleUpdate(!toggleUpdate);
+                alert('Product was added successfully to your wishlist');
+            } else alert("Couldn't add product to your wishlist");
+        })
+    }
+
     const addToCart = async () => {
         const cartItem = {
             product: product._id,
@@ -34,11 +58,6 @@ const Product = ({ match: { params: { id } } }) => {
             } else alert("Couldn't add product to cart");
         })
     }
-    const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
-    const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
-    const { user } = React.useContext(UserContext);
-    const user_id = user ? user._id : null
-    const [open, setOpen] = useState(false)
 
 
     useEffect(() => {
@@ -155,93 +174,96 @@ const Product = ({ match: { params: { id } } }) => {
                 <NavBarcomp />
                 <div className="main">
                     <div className="container">
-                        { product.product.available && ( <>
-                        <Popup
-                            open={open}
-                            modal
-                            closeOnDocumentClick
-                            onClose={() => setOpen(false)}>
-                            <>
-                                <Link className="close" onClick={() => setOpen(false)}>&times;</Link>
-                                <div className="container p-2">
-                                    <h5 className="text-center">WARNNING </h5>
-                                    <hr />
-                                    <p>You have to Login first</p>
-                                    <hr />
-                                    <div className="text-center">
-                                        <NavLink activeClassName="btn btn-info mr-2" to="/"> Login page </NavLink>
-                                        <button className="btn btn-dark ml-2" onClick={() => setOpen(false)}>Close</button>
-                                    </div>
-                                </div>
-                            </>
-                        </Popup>
-                        <div>
-                            <div className="col-12 mt-3">
-                                <div className="card">
-                                    <div class="row no-gutters">
-                                        <div class="col-md-4">
-                                            <img className="card-img-top p-2" src={product.product.image} style={{ height: "100%" }} alt="Product" />
+                        {product.product.available && (<>
+                            <Popup
+                                open={open}
+                                modal
+                                closeOnDocumentClick
+                                onClose={() => setOpen(false)}>
+                                <>
+                                    <Link className="close" onClick={() => setOpen(false)}>&times;</Link>
+                                    <div className="container p-2">
+                                        <h5 className="text-center">WARNNING </h5>
+                                        <hr />
+                                        <p>You have to Login first</p>
+                                        <hr />
+                                        <div className="text-center">
+                                            <NavLink activeClassName="btn btn-info mr-2" to="/"> Login page </NavLink>
+                                            <button className="btn btn-dark ml-2" onClick={() => setOpen(false)}>Close</button>
                                         </div>
+                                    </div>
+                                </>
+                            </Popup>
+                            <div>
+                                <div className="col-12 mt-3">
+                                    <div className="card">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <img className="card-img-top p-2" src={product.product.image} style={{ height: "100%" }} alt="Product" />
+                                            </div>
 
-                                        <div className="card-body">
-                                            <div className="row container">
-                                                <h4 className="card-title col-10">{product.product.name}</h4>
-                                                {/* <div className="col-xl-4 col-md-5 col-sm-12">
+                                            <div className="col-md-8 card-body">
+                                                <div className="row container">
+                                                    <h4 className="card-title col-10">{product.product.name}</h4>
+                                                    {/* <div className="col-xl-4 col-md-5 col-sm-12">
                                                     <Ratecomp productid={id} userid={user_id} />
                                                 </div> */}
-                                                <div className="col-1">
-                                                    <Favoritecomp productid={product.product._id} userid={user_id} />
+                                                    <div className="col-1">
+                                                        <Favoritecomp productid={product.product._id} userid={user_id} />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <hr />
-                                            <div className="card-text">
-                                                {/* <strong>By : </strong> &nbsp;<Link to={`/author/${product.product.author._id}`}>{product.product.author.firstName}&nbsp;{product.product.author.lastName}</Link> */}
-                                                <strong>Price : </strong> &nbsp;{product.product.price}
-                                                <br />
-                                                <strong>Category : </strong> &nbsp;<Link to={`/category/${product.product.category._id}`}>{product.product.category.name}</Link>
-                                                <br />
-                                                <strong>Brand : </strong> &nbsp;<Link to={`/brand/${product.product.brand._id}`}>{product.product.brand.name}</Link>
-                                                <br />
-                                                <ProductRate id={id} />
-                                                <div className="float-right">
+                                                <hr />
+                                                <div className="card-text">
+                                                    {/* <strong>By : </strong> &nbsp;<Link to={`/author/${product.product.author._id}`}>{product.product.author.firstName}&nbsp;{product.product.author.lastName}</Link> */}
+                                                    <strong>Price : </strong> &nbsp;{product.product.price}
+                                                    <br />
+                                                    <strong>Category : </strong> &nbsp;<Link to={`/category/${product.product.category._id}`}>{product.product.category.name}</Link>
+                                                    <br />
+                                                    <strong>Brand : </strong> &nbsp;<Link to={`/brand/${product.product.brand._id}`}>{product.product.brand.name}</Link>
+                                                    <br />
+                                                    <ProductRate id={id} />
+                                                </div>
+                                                <p className="card-text">
+                                                    {product.product.description}
+                                                </p>
+                                                <div className="float-right m-2">
+                                                    <Button color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger float-right m-0" onClick={() => addToWishlist()}> Add to Wishlist</Button>
+                                                </div>
+                                                <div className="float-right m-2">
                                                     <Button onClick={() => addToCart()} color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger mt-0"><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
                                                 </div>
                                             </div>
-                                            <p className="card-text">
-                                                {product.product.description}
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* reviews section */}
-                        {/* review form */}
-                        <div className="card  mt-5">
-                            <div className="card-header">
-                                <div className="row">
-                                    <div className="ml-3">
-                                        Add your review review
+                            {/* reviews section */}
+                            {/* review form */}
+                            <div className="card  mt-5">
+                                <div className="card-header">
+                                    <div className="row">
+                                        <div className="ml-3">
+                                            Add your review review
                                     </div>
-                                    <div className="col-xl-4 col-md-5 col-sm-12">
-                                        <Ratecomp productid={id} userid={user_id} />
+                                        <div className="col-xl-4 col-md-5 col-sm-12">
+                                            <Ratecomp productid={id} userid={user_id} />
+                                        </div>
                                     </div>
+                                </div>
+
+                                <div className="card-body">
+                                    <ReviewForm submitHandler={submitHandler} review="" mode="add" id="" />
                                 </div>
                             </div>
 
-                            <div className="card-body">
-                                <ReviewForm submitHandler={submitHandler} review="" mode="add" id="" />
+                            {/* reviews */}
+                            <div className="card  mt-5 mb-5">
+                                <div className="card-header">Product's reviews</div>
+                                <div className="card-body">
+                                    <Reviews reviews={reviews} submitHandler={submitHandler} deleteHandler={deleteHandler} user={user_id} />
+                                </div>
                             </div>
-                        </div>
-
-                        {/* reviews */}
-                        <div className="card  mt-5 mb-5">
-                            <div className="card-header">Product's reviews</div>
-                            <div className="card-body">
-                                <Reviews reviews={reviews} submitHandler={submitHandler} deleteHandler={deleteHandler} user={user_id} />
-                            </div>
-                        </div>
                         </>)}
                         {!product.product.available && <h3 className='p-5 m-5'>Product isn't available</h3>}
                     </div>
