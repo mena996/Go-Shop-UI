@@ -23,7 +23,7 @@ const Products = () => {
     React.useEffect(() => {
         //setting loading to true
         setProductsData({ ...productsData, loading: true })
-        fetchDataUNAuth('products').then(res => {
+        fetchDataUNAuth('products/available').then(res => {
             setProductsData({ ...productsData, products: res });
             setProductsDataFiltered({ ...productsDataFiltered, products: res.filter((product) => (product.name.includes(search))) });
         });

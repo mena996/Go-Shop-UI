@@ -53,6 +53,7 @@ const Login = ({UserContext, isAdmin}) => {
     else if (res.status === 200 && isAdmin) error = "Sorry only Admins can access this page";
 // if no user was found in DB or invalid username/password combination
     else if (res.status === 404 || res.status === 401) error = "Invalid credintials";
+    else if (res.status === 403) error = "Please verify your email first";
 // server side problem
     else error = "some thing wrong happened";
     setAuthData({ username: "", password: "", isAdmin: true });
@@ -99,10 +100,6 @@ const Login = ({UserContext, isAdmin}) => {
           onChange={handleInputChange}
           value={authData.password}
           autoComplete="current-password"
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
         />
         <Button
           type="submit"

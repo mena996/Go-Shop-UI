@@ -91,7 +91,7 @@ const Cart = () => {
             .then((response) =>
               setCartData({ ...cartData, items: response.cart })
             )
-        : alert("Couldn't add product to cart");
+        : alert("Couldn't remove product from cart");
     });
   };
 
@@ -105,7 +105,7 @@ const Cart = () => {
               Cart
             </Typography>
             <List disablePadding>
-              {cartData.items.length === 0 && <h5>Cart is empty</h5>}
+              {cartData.items.length === 0 ? <h5>Cart is empty</h5> : (<>
               {cartData.items?.map((item) => (
                 <ListItem className={classes.listItem} key={item._id}>
                   <Button
@@ -156,8 +156,9 @@ const Cart = () => {
                   $ {(totalAmount * 1.14).toFixed(2)}
                 </Typography>
               </ListItem>
+              </>)}
             </List>
-            <NavLink to="/checkout">Proceed to checkout</NavLink>
+            {cartData.items.length !== 0 && <NavLink to="/checkout">Proceed to checkout</NavLink>}
           </Paper>
         </div>
       </div>

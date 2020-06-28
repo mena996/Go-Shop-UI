@@ -65,7 +65,7 @@ const AdminUsers = () => {
               globalHandleSubmit(
                 null,
                 "users",
-                {...newData, isadmin: true},
+                {...newData, isadmin: true, verified: true},
                 data,
                 setData
               ).then(res => {
@@ -82,7 +82,7 @@ const AdminUsers = () => {
               globalHandleSubmit(
                 oldData,
                 "users",
-                {...newData, isadmin: true},
+                {...newData, isadmin: true, verified: true},
                 data,
                 setData
               ).then(res => (res) ? resolve() : reject(alert("error: All fields are required")))

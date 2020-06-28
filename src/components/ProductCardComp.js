@@ -2,7 +2,6 @@ import React from "react";
 import Favoritecomp from "./Favoritecomp";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
-import { checkAccessTokenExpiry } from "../components/adminPanel/helpers";
 
 const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => {
 
@@ -22,8 +21,24 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
     }).then(res => {
       if (res.status === 200) {
         setToggleUpdate(!toggleUpdate);
-        alert('Product was added successfully');
+        alert('Product was added successfully to your cart');
       } else alert("Couldn't add product to cart");
+    })
+  }
+
+  const addToWishlist = async () => {
+    fetch('http://localhost:5000/users/wishlist', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json",
+      },
+      credentials: 'include',
+      body: JSON.stringify({product: product._id})
+    }).then(res => {
+      if (res.status === 200) {
+        setToggleUpdate(!toggleUpdate);
+        alert('Product was added successfully to your wishlist');
+      } else alert("Couldn't add product to your wishlist");
     })
   }
 
@@ -44,6 +59,7 @@ const ProductCardComp = ({ product, userid, toggleUpdate, setToggleUpdate }) => 
         <div className="justify-content-between align-items-center">
           <div className="price text-success"><h5 className="mt-0">{product.price} L.E</h5></div>
           <Button color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger float-right mt-0" onClick={() => addToCart()}><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
+          <Button color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger float-right m-1" onClick={() => addToWishlist()}> Add to Wishlist</Button>
         </div>
       </div>
     </div>
