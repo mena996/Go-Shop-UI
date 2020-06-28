@@ -10,10 +10,18 @@ import FooterPage from './Footercomp';
 import NavBarcomp from './NavBarcomp';
 import Favoritecomp from './Favoritecomp';
 import { Button } from '@material-ui/core';
-
+import Cookies from 'js-cookie';
 
 const Product = ({ match: { params: { id } } }) => {
     const [ toggleUpdate, setToggleUpdate ] = React.useState(false);
+    const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
+    const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
+    const { user } = React.useContext(UserContext);
+    const user_id = user ? user._id : null
+    const [open, setOpen] = useState(false)
+    const cartItems = Cookies.getJSON('userData')?.cart?.map((item) => item?.product);
+    const wishlistItems = Cookies.getJSON('userData')?.wishlist;
+
     const addToCart = async () => {
         const cartItem = {
             product: product._id,
@@ -34,13 +42,24 @@ const Product = ({ match: { params: { id } } }) => {
             } else alert("Couldn't add product to cart");
         })
     }
-    const [product, setProduct] = useState({ product: {}, error: null, isloaded: false })
-    const [reviews, setReviews] = useState({ reviews: [], error: null, isloaded: false })
-    const { user } = React.useContext(UserContext);
-    const user_id = user ? user._id : null
-    const [open, setOpen] = useState(false)
-
-
+    
+    const addToWishlist = async () => {
+    fetch('http://localhost:5000/users/wishlist', {
+        method: 'POST',
+        headers: {
+        'Content-Type': "application/json",
+        },
+        credentials: 'include',
+        body: JSON.stringify({product: product.product._id})
+    }).then(res => {
+        if (res.status === 200) {
+        setToggleUpdate(!toggleUpdate);
+        alert('Product was added successfully to your wishlist');
+        } else alert("Couldn't add product to your wishlist");
+    })
+    }
+    
+    
     useEffect(() => {
         fetch(`http://localhost:5000/products/${id}`)
             .then(res => res.json())
@@ -203,8 +222,9 @@ const Product = ({ match: { params: { id } } }) => {
                                                 <strong>Brand : </strong> &nbsp;<Link to={`/brand/${product.product.brand._id}`}>{product.product.brand.name}</Link>
                                                 <br />
                                                 <ProductRate id={id} />
-                                                <div className="float-right">
-                                                    <Button onClick={() => addToCart()} color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger mt-0"><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>
+                                                <div className="float-right d-flex">
+                                                    { user && !cartItems?.includes(product.product._id) && <Button onClick={() => addToCart()} color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger m-1"><i className="fa fa-shopping-cart mr-2"></i> Add to Cart</Button>}
+                                                    { user && !wishlistItems?.includes(product.product._id) && <Button color='default' style={{ backgroundColor: '' }} className="bg-dark text-light btn btn-danger float-right m-1" onClick={() => addToWishlist()}> Add to Wishlist</Button>}
                                                 </div>
                                             </div>
                                             <p className="card-text">
