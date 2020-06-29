@@ -48,13 +48,14 @@ const CategoryProduct = (props) => {
                 <div className="card col-sm-7 col-xl-2 col-md-4 m-3 ">
                     <article className="card-group-item">
                         <header className="card-header">
-                            <h6 className="title">other categories</h6>
+                            <h6 className="title">Other Categories</h6>
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
                                 {categories.map((category, index) =>
                                     <label className="form-check" key={Math.ceil(Math.random() * 100000)}>
                                         <Link className="form-check-label" to={"/category/" + category._id}>
+                                        <img src={category.image} alt="product" width="30px" height="30px" />
                                             <span className="ml-2">
                                                 {category.name}
                                             </span>
@@ -66,7 +67,7 @@ const CategoryProduct = (props) => {
                     </article>
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
-                    <h3 className="col-10 mt-3 mr-1 pl-0">category:{category.name ? category.name : "loading"}</h3>
+                    <h3 className="col-10 mt-3 mr-1 pl-0">Category:{category.name ? category.name : "loading"}</h3>
                     <div className="container col-12 row justify-content-center">
                         {productsDataFiltered.products.map((product, index) => <ProductCardComp key={Math.ceil(Math.random() * 100000)} product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate} />)}
                     </div>

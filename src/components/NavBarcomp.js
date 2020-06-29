@@ -14,6 +14,7 @@ const NavBarcomp = () => {
   const user_id = user ? user._id : null;
 
 
+
   const logout = () => {
     fetch('http://localhost:5000/auth/logout', { method: 'POST', credentials: 'include' }).then(res => {
       setUser();
@@ -54,7 +55,7 @@ const NavBarcomp = () => {
           </ul>
           <ul className="navbar-nav ml-auto nav-flex-icons">
             <div className="form-inline my-2 my-lg-0">
-              <input className="form-control mr-sm-2" type="search" placeholder="Search" value={preSearch} onChange={e => { const { target: { value } } = e; setPreSearch(value) }} />
+              <input className="form-control mr-sm-2 col-7" type="search" placeholder="Search" value={preSearch} onChange={e => { const { target: { value } } = e; setPreSearch(value) }} />
               <Link className="btn btn-outline-light text-light my-2 my-sm-0 mr-1" type="submit" onClick={changesearch} to="/products">Search</Link>
             </div>
             {(user_id != null) ?
@@ -72,21 +73,27 @@ const NavBarcomp = () => {
                 <button type="button" className="btn btn-outline-light my-2" data-toggle="modal" data-target="#signUp">Sign Up</button>
               </li> : <></>
             }
-
-            <li className="nav-item avatar dropdown">
-              <Link className="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" to="#!">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar.jpg" width="35px" className="rounded-circle z-depth-0"
-                  alt="avatar" />
-              </Link>
-              <div className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                aria-labelledby="navbarDropdownMenuLink-55">
-                {(user_id == null) ? <button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button> : <></>}
-                {(user_id != null) ? <Link className="dropdown-item" to="/wishlist">Wishlist</Link> : <></>}
-                {(user_id != null) ? <Link className="dropdown-item" to="/favorite">Favorites</Link> : <></>}
-                {(user_id != null) ? <Link className="dropdown-item" to="" onClick={() => logout()}>Logout</Link> : <></>}
-              </div>
-            </li>
+            {(user_id == null) ?
+              <li>
+                <button type="button" className="btn btn-outline-dark bg-light my-2 ml-2" data-toggle="modal" data-target="#login">login</button>
+              </li> : <></>
+            }
+            {(user_id != null) ?
+              <li className="nav-item avatar dropdown">
+                <Link className="nav-link dropdown-toggle container" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" to="#!">
+                  <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar.jpg" width="35px" className="rounded-circle z-depth-0"
+                    alt="avatar" />
+                  <p className="text-light d-inline-block text-truncate mb-0 pl-1 pr-0 col-md-9" style={{maxWidth:"100px"}}>{user ? `${user.firstName}aaaaaaaaaaaaaaaaaaaaaaa` : ""}</p>
+                </Link>
+                <div className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                  aria-labelledby="navbarDropdownMenuLink-55">
+                  {(user_id == null) ? <button className="dropdown-item" data-toggle="modal" data-target="#login">Login</button> : <></>}
+                  {(user_id != null) ? <Link className="dropdown-item" to="/wishlist">Wishlist</Link> : <></>}
+                  {(user_id != null) ? <Link className="dropdown-item" to="/favorite">Favorites</Link> : <></>}
+                  {(user_id != null) ? <Link className="dropdown-item" to="" onClick={() => logout()}>Logout</Link> : <></>}
+                </div>
+              </li> : ""}:
           </ul>
         </div>
       </nav>

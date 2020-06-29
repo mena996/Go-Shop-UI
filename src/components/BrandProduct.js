@@ -48,7 +48,7 @@ const BrandProduct = (props) => {
                 <div className="card col-sm-7 col-xl-2 col-md-4 m-3 ">
                     <article className="card-group-item">
                         <header className="card-header">
-                            <h6 className="title">other brands</h6>
+                            <h6 className="title">Other Brands</h6>
                         </header>
                         <div className="filter-content">
                             <div className="card-body">
@@ -67,7 +67,7 @@ const BrandProduct = (props) => {
                     </article>
                 </div>
                 <div className="main container col-sm-4 col-xl-9 col-md-7 justify-content-center">
-                    <h3 className="col-10 mt-3 mr-1 pl-0">brand:{brand.data ? brand.data.name : "loading"}</h3>
+                    <h3 className="col-10 mt-3 mr-1 pl-0">Brand:{brand.data ? brand.data.name : "loading"}</h3>
                     <div className="container col-12 row justify-content-center">
                         {productsDataFiltered.products.map((product, index) => <ProductCardComp key={Math.ceil(Math.random() * 100000)} product={product} userid={user_id} toggleUpdate={toggleUpdate} setToggleUpdate={setToggleUpdate} />)}
                     </div>
